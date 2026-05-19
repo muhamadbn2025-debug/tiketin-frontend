@@ -6,7 +6,7 @@ import App from "./App.tsx";
 import "./responsive.css";
 
 // Global axios base URL
-axios.defaults.baseURL = "http://127.0.0.1:8000";
+axios.defaults.baseURL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
 
 // Global axios interceptor — auto logout kalau token expired
 axios.interceptors.response.use(
