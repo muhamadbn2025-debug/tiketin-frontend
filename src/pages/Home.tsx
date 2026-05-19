@@ -158,7 +158,7 @@ export default function Home({ openLogin }: HomeProps) {
         </div>
       </div>
 
-      {/* HERO */}
+           {/* HERO */}
       <section style={{ position:"relative", height:"100vh", overflow:"hidden" }}>
         <video autoPlay muted loop playsInline style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", zIndex:0 }}>
           <source src={heroVideo} type="video/mp4" />
@@ -168,37 +168,75 @@ export default function Home({ openLogin }: HomeProps) {
         <div className="orb-el" style={{ width:450, height:450, background:"rgba(255,255,255,0.1)", top:-100, right:-50, zIndex:2 }} />
         <div className="orb-el2 orb-el" style={{ width:350, height:350, background:"rgba(245,158,11,0.15)", bottom:-40, left:-80, zIndex:2 }} />
 
-        <div style={{ position:"absolute", inset:0, zIndex:3, display:"flex", alignItems:"center", padding:"0 80px" }}>
-          <div className="hero-content" style={{ maxWidth:700 }}>
-            <div className="h1 hero-badge" style={{ display:"inline-flex", alignItems:"center", gap:8, background:"rgba(255,255,255,0.2)", border:"1.5px solid rgba(255,255,255,0.4)", borderRadius:50, padding:"8px 20px", marginBottom:28, backdropFilter:"blur(8px)" }}>
-              <span>🎫</span>
-              <span style={{ fontWeight:800, color:"white", fontSize:13 }}>Platform Booking Tiket #1 di Indonesia</span>
+        {/* HERO CONTENT — centered layout */}
+        <div style={{ position:"absolute", inset:0, zIndex:3, display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"0 20px" }}>
+
+          {/* Badge */}
+          <div className="h1" style={{ display:"inline-flex", alignItems:"center", gap:8, background:"rgba(255,255,255,0.15)", border:"1.5px solid rgba(255,255,255,0.35)", borderRadius:50, padding:"6px 18px", marginBottom:20, backdropFilter:"blur(8px)" }}>
+            <span>🎫</span>
+            <span style={{ fontWeight:800, color:"white", fontSize:12 }}>Platform Booking Tiket #1 di Indonesia</span>
+          </div>
+
+          {/* Title — compact */}
+          <h1 className="h2 display-font" style={{ fontSize:"clamp(28px, 5vw, 52px)", fontWeight:900, lineHeight:1.15, marginBottom:10, color:"white", letterSpacing:"-0.5px", textAlign:"center" }}>
+            Temukan & Pesan Tiket{" "}
+            <span style={{ color:"#FFD700", textShadow:"0 0 20px rgba(255,215,0,0.5)" }}>Event Favoritmu</span>
+          </h1>
+
+          {/* Subtitle */}
+          <p className="h3" style={{ fontSize:"clamp(13px, 2vw, 16px)", color:"rgba(255,255,255,0.88)", marginBottom:28, fontWeight:600, textAlign:"center", maxWidth:500 }}>
+            Konser · Festival · Olahraga · Pameran — tiket resmi, harga transparan, anti calo 🛡️
+          </p>
+
+          {/* SEARCH BAR */}
+          <div className="h4 hero-search" style={{ width:"100%", maxWidth:620, marginBottom:24 }}>
+            <div style={{ background:"rgba(255,255,255,0.97)", borderRadius:20, padding:"6px 6px 6px 20px", display:"flex", alignItems:"center", gap:10, boxShadow:"0 20px 60px rgba(0,0,0,0.25)" }}>
+              <span style={{ fontSize:20 }}>🔍</span>
+              <input
+                placeholder="Cari event, konser, festival, atau artis..."
+                style={{ flex:1, border:"none", outline:"none", fontSize:15, fontWeight:600, color:"#1F2937", background:"transparent", fontFamily:"'Nunito',sans-serif", padding:"8px 0" }}
+                onFocus={e => e.currentTarget.style.color = "#7C3AED"}
+                onBlur={e => e.currentTarget.style.color = "#1F2937"}
+              />
+              <button
+                onClick={openLogin}
+                style={{ background:"linear-gradient(135deg,#7C3AED,#EC4899)", color:"white", border:"none", borderRadius:14, padding:"12px 22px", fontWeight:800, fontSize:14, cursor:"pointer", fontFamily:"'Nunito',sans-serif", whiteSpace:"nowrap", flexShrink:0 }}
+              >
+                Cari Sekarang
+              </button>
             </div>
-            <h1 className="h2 display-font hero-title" style={{ fontSize:72, fontWeight:900, lineHeight:1.05, marginBottom:24, color:"white", letterSpacing:"-1px" }}>
-              Satu Tiket,<br />
-              <span style={{ color:"#FFD700", textShadow:"0 0 30px rgba(255,215,0,0.5)" }}>Sejuta Momen</span><br />
-              Tak Terlupakan.
-            </h1>
-            <p className="h3 hero-desc" style={{ fontSize:19, color:"rgba(255,255,255,0.9)", lineHeight:1.75, marginBottom:40, maxWidth:520, fontWeight:600 }}>
-              Beli tiket konser, festival, dan event favoritmu dengan aman, mudah, dan tanpa calo. Proses booking dalam 60 detik! 🎉
-            </p>
-            <div className="h4 hero-buttons" style={{ display:"flex", gap:16, marginBottom:52, flexWrap:"wrap" }}>
-              <button onClick={openLogin} className="btn-primary" style={{ padding:"18px 40px", fontSize:17 }}>Pesan Tiket Sekarang →</button>
-              <Link to="/events">
-                <button className="btn-ghost" style={{ padding:"18px 32px", fontSize:17, background:"rgba(255,255,255,0.2)", borderColor:"rgba(255,255,255,0.5)", color:"white" }}>Jelajahi Event 🎪</button>
-              </Link>
-            </div>
-            <div className="h4 hero-stats" style={{ display:"flex", gap:44 }}>
-              {[{val:"500K+",label:"Tiket Terjual"},{val:"1.200+",label:"Event"},{val:"0 Calo",label:"Dijamin Aman"}].map((s,i) => (
-                <div key={i}>
-                  <div style={{ fontSize:30, fontWeight:900, color:"#FFD700", fontFamily:"'Plus Jakarta Sans',sans-serif" }}>{s.val}</div>
-                  <div style={{ fontSize:13, color:"rgba(255,255,255,0.8)", fontWeight:700 }}>{s.label}</div>
-                </div>
+
+            {/* Quick category pills */}
+            <div style={{ display:"flex", gap:8, marginTop:12, flexWrap:"wrap", justifyContent:"center" }}>
+              {["🎵 Konser", "🎪 Festival", "⚽ Olahraga", "🎭 Pameran", "🔥 Terlaris"].map((cat, i) => (
+                <button key={i} onClick={openLogin} style={{ background:"rgba(255,255,255,0.2)", border:"1.5px solid rgba(255,255,255,0.4)", borderRadius:50, padding:"5px 14px", fontSize:12, fontWeight:700, color:"white", cursor:"pointer", fontFamily:"'Nunito',sans-serif", backdropFilter:"blur(8px)", transition:"all 0.2s" }}
+                  onMouseOver={e => { e.currentTarget.style.background="rgba(255,255,255,0.35)"; }}
+                  onMouseOut={e => { e.currentTarget.style.background="rgba(255,255,255,0.2)"; }}>
+                  {cat}
+                </button>
               ))}
             </div>
           </div>
+
+          {/* STATS — compact horizontal */}
+          <div className="h4 hero-stats" style={{ display:"flex", gap:0, background:"rgba(255,255,255,0.12)", backdropFilter:"blur(12px)", border:"1.5px solid rgba(255,255,255,0.2)", borderRadius:20, overflow:"hidden" }}>
+            {[
+              { val:"500K+", label:"Tiket Terjual", icon:"🎫" },
+              { val:"1.200+", label:"Event", icon:"🎪" },
+              { val:"98%",   label:"Kepuasan", icon:"⭐" },
+              { val:"0 Calo",label:"Dijamin", icon:"🛡️" },
+            ].map((s, i, arr) => (
+              <div key={i} style={{ padding:"14px 22px", textAlign:"center", borderRight: i < arr.length - 1 ? "1px solid rgba(255,255,255,0.2)" : "none" }}>
+                <div style={{ fontSize:14, marginBottom:2 }}>{s.icon}</div>
+                <div style={{ fontSize:"clamp(16px,2.5vw,22px)", fontWeight:900, color:"#FFD700", fontFamily:"'Plus Jakarta Sans',sans-serif", lineHeight:1 }}>{s.val}</div>
+                <div style={{ fontSize:11, color:"rgba(255,255,255,0.8)", fontWeight:700, marginTop:2 }}>{s.label}</div>
+              </div>
+            ))}
+          </div>
+
         </div>
       </section>
+
 
       {/* STATS BAR */}
       <div className="stats-bar" style={{ background:"linear-gradient(135deg,#7C3AED,#EC4899)", padding:"32px 80px" }}>
