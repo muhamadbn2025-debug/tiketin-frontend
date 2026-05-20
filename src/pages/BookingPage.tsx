@@ -42,6 +42,7 @@ export default function BookingPage() {
         const e = res.data.data;
         setEvent({
           ...e,
+          img: e.image,
           date: new Date(e.event_date).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" }),
           time: new Date(e.event_date).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" }) + " WIB",
           tickets: e.tickets || dummyEvent.tickets,
@@ -176,7 +177,12 @@ export default function BookingPage() {
             {/* Event Info */}
             <div style={{ background: "white", borderRadius: 20, overflow: "hidden", border: "1.5px solid #EDE9FE", marginBottom: 20, boxShadow: "0 2px 12px rgba(124,58,237,0.06)" }}>
               <div style={{ position: "relative", height: 180 }}>
-                <img src={event.img} style={{ width: "100%", height: "100%", objectFit: "cover" }} alt={event.title} />
+                <img
+                  src={event.img || event.image || dummyEvent.img}
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  alt={event.title}
+                  onError={e => { (e.target as HTMLImageElement).src = dummyEvent.img; }}
+                />
                 <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top,rgba(30,10,60,0.8),transparent 50%)" }} />
                 <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: "linear-gradient(90deg,#7C3AED,#EC4899,#F59E0B)" }} />
                 <div style={{ position: "absolute", bottom: 16, left: 18 }}>
