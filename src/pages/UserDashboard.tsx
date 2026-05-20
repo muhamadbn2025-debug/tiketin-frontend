@@ -60,19 +60,7 @@ export default function UserDashboard() {
   const fetchEvents = async () => {
     try {
       const res = await axios.get("/api/events");
-      if (res.data.data?.data?.length > 0) {
-        const apiEvents = res.data.data.data.slice(0, 6).map((e: any) => ({
-          ...e,
-          img: e.image, // ← map image ke img
-          date: new Date(e.event_date).toLocaleDateString("id-ID", {
-            day: "numeric", month: "short", year: "numeric"
-          }), // ← format tanggal
-          price: e.tickets?.[0]?.price
-            ? `Rp ${Number(e.tickets[0].price).toLocaleString("id-ID")}`
-            : "Rp 750.000",
-        }));
-        setEvents(apiEvents);
-      }
+      if (res.data.data?.data?.length > 0) setEvents(res.data.data.data.slice(0, 3));
     } catch { }
   };
 
@@ -87,7 +75,7 @@ export default function UserDashboard() {
     if (!profileForm.name.trim()) { toast.error("Nama tidak boleh kosong!"); return; }
     setProfileLoading(true);
     try {
-      await axios.put("/api/auth/profile", profileForm, { headers: { Authorization: `Bearer ${token}` } });
+      const res = await axios.put("/api/auth/profile", profileForm, { headers: { Authorization: `Bearer ${token}` } });
       const updatedUser = { ...user, ...profileForm };
       localStorage.setItem("user", JSON.stringify(updatedUser));
       setUser(updatedUser);
@@ -108,7 +96,7 @@ export default function UserDashboard() {
   const formatDate = (d: string) => new Date(d).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" });
 
   return (
-    <div style={{ minHeight: "100vh", background: "#F5F3FF", overflowX: "hidden", fontFamily: "'Nunito', sans-serif", display: "flex" }}>
+    <div className="dash-wrapper" style={{ minHeight: "100vh", background: "#F5F3FF", fontFamily: "'Nunito', sans-serif", display: "flex", overflowX: "hidden", maxWidth: "100vw" }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap');
 
@@ -176,12 +164,13 @@ export default function UserDashboard() {
           .ticket-img { width:100% !important; height:160px !important; }
           .ticket-info { flex-direction:column !important; gap:12px !important; align-items:flex-start !important; }
           .ticket-price { text-align:left !important; }
-          .mobile-sidebar { box-shadow:none !important; border-right:none !important; }
+          .mobile-sidebar { box-shadow:none !important; border:none !important; }
+          .dash-wrapper { overflow-x:hidden !important; }
         }
 
         .bottom-nav { display:none; }
         @media (max-width:768px) {
-        .bottom-nav { display:flex !important; position:fixed; bottom:0; left:0; right:0; background:white; border-top:1.5px solid #EDE9FE; z-index:80; padding:8px 0 12px; box-shadow:0 -4px 20px rgba(124,58,237,0.1); }
+          .bottom-nav { display:flex !important; position:fixed; bottom:0; left:0; right:0; background:white; border-top:1.5px solid #EDE9FE; z-index:80; padding:8px 0 12px; box-shadow:0 -4px 20px rgba(124,58,237,0.1); }
         }
       `}</style>
 
@@ -192,7 +181,8 @@ export default function UserDashboard() {
 
       {/* SIDEBAR */}
       <div className={sidebarOpen && isMobile ? "mobile-sidebar" : ""} style={{
-        width: 240, background: "white", borderRight: "none",
+        width: 240, background: "white",
+        borderRight: isMobile ? "none" : "1.5px solid #EDE9FE",
         minHeight: "100vh", padding: "24px 14px", flexShrink: 0,
         boxShadow: isMobile ? "none" : "4px 0 20px rgba(124,58,237,0.06)",
         position: isMobile ? "fixed" : "relative",
@@ -312,7 +302,7 @@ export default function UserDashboard() {
             ].map((s, i) => (
               <div key={i} className="stat-card" style={{ background: s.bg }}>
                 <div style={{ fontSize: 24, marginBottom: 8 }}>{s.icon}</div>
-                <div style={{ fontSize: i === 2 ? 12 : 22, fontWeight: 900, color: s.color, lineHeight: 1 }}>{s.value}</div>
+                <div style={{ fontSize: i === 2 ? 13 : 28, fontWeight: 900, color: s.color, lineHeight: 1 }}>{s.value}</div>
                 <div style={{ fontSize: 11, color: "#6B7280", fontWeight: 700, marginTop: 4 }}>{s.label}</div>
               </div>
             ))}
@@ -374,12 +364,7 @@ export default function UserDashboard() {
               {events.map((ev: any, i) => (
                 <div key={ev.id || i} className="event-card">
                   <div style={{ position: "relative", height: 160, overflow: "hidden" }}>
-                    <img
-                      src={ev.img || ev.image || "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400&h=200&fit=crop"}
-                      className="eimg"
-                      alt={ev.title}
-                      onError={e => { (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400&h=200&fit=crop"; }}
-                    />
+                    <img src={ev.img || ev.image} className="eimg" alt={ev.title} />
                     <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(30,10,60,0.7), transparent 55%)" }} />
                     <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: "linear-gradient(90deg,#7C3AED,#F59E0B)" }} />
                     <div style={{ position: "absolute", top: 10, left: 10 }}>
