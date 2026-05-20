@@ -75,7 +75,7 @@ export default function UserDashboard() {
     if (!profileForm.name.trim()) { toast.error("Nama tidak boleh kosong!"); return; }
     setProfileLoading(true);
     try {
-      const res = await axios.put("/api/auth/profile", profileForm, { headers: { Authorization: `Bearer ${token}` } });
+      await axios.put("/api/auth/profile", profileForm, { headers: { Authorization: `Bearer ${token}` } });
       const updatedUser = { ...user, ...profileForm };
       localStorage.setItem("user", JSON.stringify(updatedUser));
       setUser(updatedUser);
