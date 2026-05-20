@@ -11,30 +11,18 @@ const events = [
   { id: 1, title: "Coldplay: Music of the Spheres", category: "Konser", date: "14 Jun 2026", location: "GBK Stadium, Jakarta", price: "Rp 750.000", img: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=400&fit=crop", badge: "🔥 Hot", left: "234 tiket tersisa" },
   { id: 2, title: "Jakarta Jazz Festival 2026", category: "Festival", date: "22 Jul 2026", location: "Ancol Beach City, Jakarta", price: "Rp 450.000", img: "https://images.unsplash.com/photo-1415201364774-f6f0bb35f28f?w=600&h=400&fit=crop", badge: "🎵 Baru", left: "512 tiket tersisa" },
   { id: 3, title: "BTS World Tour 2026", category: "Konser", date: "5 Agt 2026", location: "Stadion Manahan, Solo", price: "Rp 1.200.000", img: "https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=600&h=400&fit=crop", badge: "⚡ Limited", left: "89 tiket tersisa" },
-  { id: 4, title: "Dewa 19 Reunion Concert", category: "Konser", date: "19 Agt 2026", location: "ICE BSD, Tangerang", price: "Rp 350.000", img: "https://images.unsplash.com/photo-1501386761578-eaa54b595103?w=600&h=400&fit=crop", badge: "🎸 Nostalgia", left: "1.200 tiket tersisa" },
+  { id: 4, title: "Dewa 19 Reunion Concert", category: "Konser", date: "19 Agt 2026", location: "ICE BSD, Tangerang", price: "Rp 350.000", img: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&h=400&fit=crop", badge: "🎸 Nostalgia", left: "1.200 tiket tersisa" },
   { id: 5, title: "Soundrenaline 2026", category: "Festival", date: "30 Agt 2026", location: "Garuda Wisnu Kencana, Bali", price: "Rp 550.000", img: "https://images.unsplash.com/photo-1506157786151-b8491531f063?w=600&h=400&fit=crop", badge: "🌴 Bali", left: "876 tiket tersisa" },
   { id: 6, title: "We The Fest 2026", category: "Festival", date: "12 Sep 2026", location: "JIEXPO Kemayoran, Jakarta", price: "Rp 680.000", img: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=600&h=400&fit=crop", badge: "✨ Trending", left: "345 tiket tersisa" },
 ];
 
 const promos = [
-  {
-    code: "TIKETBARU", discount: "50%", maxDisc: "Rp 150.000", desc: "Khusus pengguna baru! Diskon 50% untuk pembelian pertamamu", icon: "🎉", color: "#7C3AED", bg: "linear-gradient(135deg,#7C3AED,#9333EA)", validUntil: "31 Des 2026", type: "New User"
-  },
-  {
-    code: "KONSER2026", discount: "30%", maxDisc: "Rp 200.000", desc: "Diskon spesial untuk semua tiket konser kategori VIP", icon: "🎸", color: "#EC4899", bg: "linear-gradient(135deg,#EC4899,#DB2777)", validUntil: "30 Jun 2026", type: "Konser"
-  },
-  {
-    code: "FESTIVAL10", discount: "10%", maxDisc: "Rp 75.000", desc: "Cashback 10% untuk pembelian tiket festival manapun", icon: "🎪", color: "#F59E0B", bg: "linear-gradient(135deg,#F59E0B,#D97706)", validUntil: "31 Agt 2026", type: "Festival"
-  },
-  {
-    code: "GOPAYBACK", discount: "15%", maxDisc: "Rp 100.000", desc: "Cashback GoPay untuk semua transaksi via e-wallet", icon: "📱", color: "#059669", bg: "linear-gradient(135deg,#059669,#047857)", validUntil: "30 Jul 2026", type: "E-Wallet"
-  },
-  {
-    code: "WEEKEND50K", discount: "Rp 50K", maxDisc: "Rp 50.000", desc: "Potongan langsung Rp 50.000 untuk pembelian di hari Sabtu & Minggu", icon: "🌴", color: "#0EA5E9", bg: "linear-gradient(135deg,#0EA5E9,#0284C7)", validUntil: "Setiap Weekend", type: "Weekend"
-  },
-  {
-    code: "BELI2HEMAT", discount: "25%", maxDisc: "Rp 300.000", desc: "Beli 2 tiket sekaligus, hemat 25% untuk tiket kedua", icon: "👥", color: "#8B5CF6", bg: "linear-gradient(135deg,#8B5CF6,#7C3AED)", validUntil: "31 Des 2026", type: "Bundle"
-  },
+  { code: "TIKETBARU", discount: "50%", maxDisc: "Rp 150.000", desc: "Khusus pengguna baru! Diskon 50% untuk pembelian pertamamu", icon: "🎉", color: "#7C3AED", bg: "linear-gradient(135deg,#7C3AED,#9333EA)", validUntil: "31 Des 2026", type: "New User" },
+  { code: "KONSER2026", discount: "30%", maxDisc: "Rp 200.000", desc: "Diskon spesial untuk semua tiket konser kategori VIP", icon: "🎸", color: "#EC4899", bg: "linear-gradient(135deg,#EC4899,#DB2777)", validUntil: "30 Jun 2026", type: "Konser" },
+  { code: "FESTIVAL10", discount: "10%", maxDisc: "Rp 75.000", desc: "Cashback 10% untuk pembelian tiket festival manapun", icon: "🎪", color: "#F59E0B", bg: "linear-gradient(135deg,#F59E0B,#D97706)", validUntil: "31 Agt 2026", type: "Festival" },
+  { code: "GOPAYBACK", discount: "15%", maxDisc: "Rp 100.000", desc: "Cashback GoPay untuk semua transaksi via e-wallet", icon: "📱", color: "#059669", bg: "linear-gradient(135deg,#059669,#047857)", validUntil: "30 Jul 2026", type: "E-Wallet" },
+  { code: "WEEKEND50K", discount: "Rp 50K", maxDisc: "Rp 50.000", desc: "Potongan langsung Rp 50.000 untuk pembelian di hari Sabtu & Minggu", icon: "🌴", color: "#0EA5E9", bg: "linear-gradient(135deg,#0EA5E9,#0284C7)", validUntil: "Setiap Weekend", type: "Weekend" },
+  { code: "BELI2HEMAT", discount: "25%", maxDisc: "Rp 300.000", desc: "Beli 2 tiket sekaligus, hemat 25% untuk tiket kedua", icon: "👥", color: "#8B5CF6", bg: "linear-gradient(135deg,#8B5CF6,#7C3AED)", validUntil: "31 Des 2026", type: "Bundle" },
 ];
 
 const flipCards = [
@@ -94,7 +82,6 @@ export default function Home({ openLogin }: HomeProps) {
         @keyframes orb{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.05)}66%{transform:translate(-20px,15px) scale(0.95)}}
         @keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
         @keyframes pop{0%{transform:scale(0.95);opacity:0}100%{transform:scale(1);opacity:1}}
-        @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
 
         .h1{animation:hero-in 0.9s ease 0.2s both}
         .h2{animation:hero-in 0.9s ease 0.45s both}
@@ -152,11 +139,7 @@ export default function Home({ openLogin }: HomeProps) {
           .nav-container { padding:12px 16px !important; }
           .nav-buttons button:first-child { display:none !important; }
           .nav-buttons button:last-child { padding:9px 14px !important; font-size:13px !important; }
-          .hero-content-wrap {
-            padding:0 16px !important;
-            justify-content:center !important;
-            padding-top:0 !important;
-          }
+          .hero-content-wrap { padding:60px 16px 24px !important; justify-content:center !important; }
           .hero-title { font-size:clamp(20px,5.5vw,32px) !important; margin-bottom:6px !important; }
           .hero-search-box { padding:5px 5px 5px 14px !important; }
           .hero-search-box input { font-size:13px !important; }
@@ -226,7 +209,7 @@ export default function Home({ openLogin }: HomeProps) {
         </div>
       </div>
 
-      {/* ── HERO ── */}
+      {/* HERO */}
       <section style={{ position: "relative", height: "100svh", minHeight: 560, overflow: "hidden" }}>
         <video autoPlay muted loop playsInline style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", zIndex: 0 }}>
           <source src={heroVideo} type="video/mp4" />
@@ -237,25 +220,17 @@ export default function Home({ openLogin }: HomeProps) {
         <div className="orb-el2 orb-el" style={{ width: 280, height: 280, background: "rgba(245,158,11,0.12)", bottom: -30, left: -60, zIndex: 2 }} />
 
         <div className="hero-content-wrap" style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, zIndex: 3, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "60px 24px 24px" }}>
-
-          {/* Badge */}
           <div className="h1" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.15)", border: "1.5px solid rgba(255,255,255,0.35)", borderRadius: 50, padding: "6px 16px", marginBottom: 16, backdropFilter: "blur(8px)" }}>
             <span>🎫</span>
             <span style={{ fontWeight: 800, color: "white", fontSize: 11 }}>Platform Booking Tiket #1 di Indonesia</span>
           </div>
-
-          {/* Title */}
           <h1 className="h2 display-font hero-title" style={{ fontSize: "clamp(24px, 4.5vw, 48px)", fontWeight: 900, lineHeight: 1.15, marginBottom: 10, color: "white", letterSpacing: "-0.5px", textAlign: "center", maxWidth: 600 }}>
             Temukan & Pesan Tiket{" "}
             <span style={{ color: "#FFD700", textShadow: "0 0 20px rgba(255,215,0,0.5)" }}>Event Favoritmu</span>
           </h1>
-
-          {/* Subtitle */}
           <p className="h3" style={{ fontSize: "clamp(12px, 1.8vw, 15px)", color: "rgba(255,255,255,0.88)", marginBottom: 22, fontWeight: 600, textAlign: "center", maxWidth: 480 }}>
             Konser · Festival · Olahraga · Pameran — tiket resmi, harga transparan, anti calo 🛡️
           </p>
-
-          {/* SEARCH BAR */}
           <div className="h4" style={{ width: "100%", maxWidth: 580, marginBottom: 16 }}>
             <div className="hero-search-box" style={{ background: "rgba(255,255,255,0.97)", borderRadius: 18, padding: "5px 5px 5px 16px", display: "flex", alignItems: "center", gap: 8, boxShadow: "0 16px 48px rgba(0,0,0,0.25)" }}>
               <span style={{ fontSize: 18, flexShrink: 0 }}>🔍</span>
@@ -265,30 +240,21 @@ export default function Home({ openLogin }: HomeProps) {
                 onChange={e => setSearchQuery(e.target.value)}
                 onKeyDown={e => e.key === "Enter" && document.getElementById("events")?.scrollIntoView({ behavior: "smooth" })}
                 style={{ flex: 1, border: "none", outline: "none", fontSize: 14, fontWeight: 600, color: "#1F2937", background: "transparent", fontFamily: "'Nunito',sans-serif", padding: "8px 0", minWidth: 0 }}
-                onFocus={e => e.currentTarget.style.color = "#7C3AED"}
-                onBlur={e => e.currentTarget.style.color = "#1F2937"}
               />
-              <button
-                onClick={() => document.getElementById("events")?.scrollIntoView({ behavior: "smooth" })}
-                style={{ background: "linear-gradient(135deg,#7C3AED,#EC4899)", color: "white", border: "none", borderRadius: 13, padding: "11px 18px", fontWeight: 800, fontSize: 13, cursor: "pointer", fontFamily: "'Nunito',sans-serif", whiteSpace: "nowrap", flexShrink: 0 }}
-              >
+              <button onClick={() => document.getElementById("events")?.scrollIntoView({ behavior: "smooth" })}
+                style={{ background: "linear-gradient(135deg,#7C3AED,#EC4899)", color: "white", border: "none", borderRadius: 13, padding: "11px 18px", fontWeight: 800, fontSize: 13, cursor: "pointer", fontFamily: "'Nunito',sans-serif", whiteSpace: "nowrap", flexShrink: 0 }}>
                 Cari
               </button>
             </div>
-
-            {/* Category pills */}
             <div style={{ display: "flex", gap: 8, marginTop: 10, flexWrap: "wrap", justifyContent: "center" }}>
               {["🎵 Konser", "🎪 Festival", "⚽ Olahraga", "🎭 Pameran"].map((cat, i) => (
-                <button key={i}
-                  onClick={() => document.getElementById("events")?.scrollIntoView({ behavior: "smooth" })}
+                <button key={i} onClick={() => document.getElementById("events")?.scrollIntoView({ behavior: "smooth" })}
                   style={{ background: "rgba(255,255,255,0.18)", border: "1.5px solid rgba(255,255,255,0.35)", borderRadius: 50, padding: "5px 12px", fontSize: 11, fontWeight: 700, color: "white", cursor: "pointer", fontFamily: "'Nunito',sans-serif", backdropFilter: "blur(8px)" }}>
                   {cat}
                 </button>
               ))}
             </div>
           </div>
-
-          {/* STATS */}
           <div className="h4 hero-stats" style={{ display: "flex", gap: 0, background: "rgba(255,255,255,0.12)", backdropFilter: "blur(12px)", border: "1.5px solid rgba(255,255,255,0.2)", borderRadius: 16, overflow: "hidden" }}>
             {[
               { val: "500K+", label: "Tiket Terjual", icon: "🎫" },
@@ -341,7 +307,8 @@ export default function Home({ openLogin }: HomeProps) {
             {filtered.map((ev) => (
               <div key={ev.id} className="event-card">
                 <div style={{ position: "relative", height: 200, overflow: "hidden" }}>
-                  <img src={ev.img} className="eimg" alt={ev.title} />
+                  <img src={ev.img} className="eimg" alt={ev.title}
+                    onError={e => { (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=400&fit=crop"; }} />
                   <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top,rgba(30,10,60,0.75) 0%,transparent 55%)" }} />
                   <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: "linear-gradient(90deg,#7C3AED,#EC4899,#F59E0B)" }} />
                   <div style={{ position: "absolute", top: 12, left: 12 }}><span style={{ background: "rgba(124,58,237,0.9)", color: "white", borderRadius: 50, padding: "3px 10px", fontSize: 11, fontWeight: 900 }}>{ev.badge}</span></div>
@@ -366,7 +333,7 @@ export default function Home({ openLogin }: HomeProps) {
         </div>
       </section>
 
-      {/* ── PROMO & VOUCHER SECTION ── */}
+      {/* PROMO */}
       <section id="promo" ref={setRef("promo")} className="section-pad" style={{ padding: "72px 80px", background: "white" }}>
         <div className={`section-anim ${visible["promo"] ? "in" : ""}`}>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
@@ -376,44 +343,32 @@ export default function Home({ openLogin }: HomeProps) {
             <h2 className="display-font section-title" style={{ fontSize: 36, fontWeight: 900, marginBottom: 10, color: "#1F2937" }}>Hemat Lebih Banyak <span className="gradient-text">dengan Promo</span></h2>
             <p className="section-desc" style={{ fontSize: 15, color: "#6B7280", fontWeight: 600 }}>Klik untuk copy kode promo, langsung pakai saat checkout! 🎁</p>
           </div>
-
           <div className="promo-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18 }}>
             {promos.map((promo, i) => (
-              <div key={i} className="promo-card" style={{ background: promo.bg, animationDelay: `${i * 0.07}s` }}
-                onClick={() => handleCopy(promo.code)}>
-                {/* Top */}
+              <div key={i} className="promo-card" style={{ background: promo.bg, animationDelay: `${i * 0.07}s` }} onClick={() => handleCopy(promo.code)}>
                 <div style={{ padding: "22px 22px 16px" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}>
                     <div style={{ fontSize: 36 }}>{promo.icon}</div>
                     <span style={{ background: "rgba(255,255,255,0.25)", border: "1px solid rgba(255,255,255,0.4)", borderRadius: 50, padding: "3px 10px", fontSize: 10, fontWeight: 800, color: "white" }}>{promo.type}</span>
                   </div>
-                  <div style={{ fontSize: 32, fontWeight: 900, color: "white", fontFamily: "'Plus Jakarta Sans',sans-serif", lineHeight: 1, marginBottom: 4 }}>
-                    DISKON {promo.discount}
-                  </div>
+                  <div style={{ fontSize: 32, fontWeight: 900, color: "white", fontFamily: "'Plus Jakarta Sans',sans-serif", lineHeight: 1, marginBottom: 4 }}>DISKON {promo.discount}</div>
                   <div style={{ fontSize: 12, color: "rgba(255,255,255,0.85)", fontWeight: 600, marginBottom: 12 }}>Maks. {promo.maxDisc}</div>
                   <p style={{ fontSize: 12, color: "rgba(255,255,255,0.9)", fontWeight: 600, lineHeight: 1.6 }}>{promo.desc}</p>
                 </div>
-
-                {/* Dashed divider */}
                 <div style={{ margin: "0 22px", borderTop: "1.5px dashed rgba(255,255,255,0.35)" }} />
-
-                {/* Bottom — kode */}
                 <div style={{ padding: "14px 22px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <div>
                     <div style={{ fontSize: 10, color: "rgba(255,255,255,0.7)", fontWeight: 700, marginBottom: 4 }}>KODE PROMO</div>
                     <div style={{ fontSize: 16, fontWeight: 900, color: "white", letterSpacing: "2px", fontFamily: "'Plus Jakarta Sans',sans-serif" }}>{promo.code}</div>
                     <div style={{ fontSize: 10, color: "rgba(255,255,255,0.65)", fontWeight: 600, marginTop: 2 }}>Berlaku: {promo.validUntil}</div>
                   </div>
-                  <button className={`copy-btn ${copiedCode === promo.code ? "copied" : ""}`}
-                    onClick={e => { e.stopPropagation(); handleCopy(promo.code); }}>
+                  <button className={`copy-btn ${copiedCode === promo.code ? "copied" : ""}`} onClick={e => { e.stopPropagation(); handleCopy(promo.code); }}>
                     {copiedCode === promo.code ? "✅ Disalin!" : "📋 Copy"}
                   </button>
                 </div>
               </div>
             ))}
           </div>
-
-          {/* Banner bawah */}
           <div style={{ marginTop: 28, background: "linear-gradient(135deg,#F5F3FF,#FDF2F8)", borderRadius: 20, padding: "20px 28px", border: "1.5px solid #EDE9FE", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 14 }}>
             <div>
               <div style={{ fontSize: 15, fontWeight: 900, color: "#1F2937", marginBottom: 4 }}>🎊 Promo member baru — diskon 50% tiket pertamamu!</div>
@@ -498,7 +453,7 @@ export default function Home({ openLogin }: HomeProps) {
         </div>
       </section>
 
-      {/* WHY TIKETIN */}
+      {/* WHY */}
       <section id="why" ref={setRef("why")} className="section-pad" style={{ padding: "72px 80px", background: "#FAFAFF" }}>
         <div className={`section-anim ${visible["why"] ? "in" : ""}`}>
           <div className="why-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 56, alignItems: "center" }}>
