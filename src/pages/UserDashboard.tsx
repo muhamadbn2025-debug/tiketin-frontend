@@ -22,7 +22,7 @@ export default function UserDashboard() {
   const [activeTab, setActiveTab] = useState<"tickets" | "events">("tickets");
   const [selectedBooking, setSelectedBooking] = useState<any>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [mobileNav, setMobileNav] = useState(false);
+  
 
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const token = localStorage.getItem("token");
@@ -34,7 +34,7 @@ export default function UserDashboard() {
     window.addEventListener("resize", checkWidth);
     fetchBookings();
     fetchEvents();
-    const handleClick = () => { setOpenMenu(false); setMobileNav(false); };
+    const handleClick = () => { setOpenMenu(false); };
     document.addEventListener("click", handleClick);
     return () => { document.removeEventListener("click", handleClick); window.removeEventListener("resize", checkWidth); };
   }, []);
@@ -291,7 +291,7 @@ export default function UserDashboard() {
                 </div>
               ) : (
                 <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-                  {bookings.map((b, i) => (
+                  {bookings.map((b) => (
                     <div key={b.id} className="ticket-card">
                       <div className="ticket-card-row" style={{ display: "flex" }}>
                         {/* Image */}

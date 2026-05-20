@@ -348,7 +348,7 @@ export default function AdminDashboard() {
 
               {/* Event cards — mobile friendly */}
               <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                {filteredEvents.map((ev, i) => (
+                {filteredEvents.map((ev)=> (
                   <div key={ev.id} style={{ background: "white", borderRadius: 16, border: "1.5px solid #EDE9FE", overflow: "hidden", boxShadow: "0 2px 12px rgba(124,58,237,0.06)" }}>
                     <div className="event-card-mobile" style={{ display: "flex" }}>
                       <img src={ev.image} style={{ width: 110, height: 90, objectFit: "cover", flexShrink: 0 }} alt={ev.title} />
@@ -400,7 +400,7 @@ export default function AdminDashboard() {
 
               {/* Booking cards — mobile friendly */}
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                {filteredBookings.map((b, i) => (
+                {filteredBookings.map((b) => (
                   <div key={b.id} style={{ background: "white", borderRadius: 14, border: "1.5px solid #EDE9FE", padding: "14px 16px", boxShadow: "0 2px 12px rgba(124,58,237,0.06)" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
                       <div>
