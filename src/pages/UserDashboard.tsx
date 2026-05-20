@@ -377,6 +377,7 @@ export default function UserDashboard() {
                       src={ev.img || ev.image || "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400&h=200&fit=crop"}
                       className="eimg"
                       alt={ev.title}
+                      onError={e => { (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400&h=200&fit=crop"; }}
                     />
                     <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(30,10,60,0.7), transparent 55%)" }} />
                     <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: "linear-gradient(90deg,#7C3AED,#F59E0B)" }} />
