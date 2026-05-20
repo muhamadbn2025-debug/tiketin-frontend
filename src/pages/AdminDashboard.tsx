@@ -103,7 +103,7 @@ export default function AdminDashboard() {
 
   const handleLogout = async () => {
     try { await axios.post("/api/auth/logout", {}, { headers: { Authorization: `Bearer ${token}` } }); } catch { }
-    localStorage.removeItem("token"); localStorage.removeItem("user"); navigate("/?login=true");
+    localStorage.removeItem("token"); localStorage.removeItem("user"); navigate("/");
   };
 
   // ── FIX REVENUE NaN: pastikan total_price selalu number ──
@@ -334,6 +334,8 @@ export default function AdminDashboard() {
                   <div style={{ fontSize: 13, fontWeight: 800, color: "#1F2937" }}>{user?.name || "Admin"}</div>
                   <div style={{ fontSize: 11, color: "#9CA3AF", fontWeight: 600 }}>{user?.email || "admin@tiketin.com"}</div>
                 </div>
+                <div style={{ height: 1, background: "#EDE9FE", marginBottom: 4 }} />
+                
                 <button onClick={() => { handleLogout(); setShowUserMenu(false); }} style={{ width: "100%", textAlign: "left", padding: "9px 12px", background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 700, color: "#DC2626", fontFamily: "'Nunito',sans-serif", borderRadius: 8, display: "flex", alignItems: "center", gap: 8 }}
                   onMouseOver={e => (e.currentTarget.style.background = "#FEF2F2")}
                   onMouseOut={e => (e.currentTarget.style.background = "none")}>
