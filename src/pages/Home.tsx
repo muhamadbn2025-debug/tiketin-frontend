@@ -221,7 +221,7 @@ export default function Home({ openLogin }: HomeProps) {
       </div>
 
       {/* ── HERO ── */}
-      <section style={{ position: "relative", height: "100vh", minHeight: 600, overflow: "hidden" }}>
+      <section style={{ position: "relative", height: "100vh", minHeight: 600, overflow: "hidden", paddingTop: 0 }}>
         <video autoPlay muted loop playsInline style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", zIndex: 0 }}>
           <source src={heroVideo} type="video/mp4" />
         </video>
@@ -230,7 +230,7 @@ export default function Home({ openLogin }: HomeProps) {
         <div className="orb-el" style={{ width: 350, height: 350, background: "rgba(255,255,255,0.08)", top: -80, right: -40, zIndex: 2 }} />
         <div className="orb-el2 orb-el" style={{ width: 280, height: 280, background: "rgba(245,158,11,0.12)", bottom: -30, left: -60, zIndex: 2 }} />
 
-        <div className="hero-content-wrap" style={{ position: "absolute", inset: 0, zIndex: 3, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-start", paddingTop: "clamp(60px, 10vw, 100px)", paddingBottom: "clamp(40px, 8vw, 80px)" }}>
+        <div className="hero-content-wrap" style={{ position: "absolute", inset: 0, zIndex: 3, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "0 24px", paddingTop: "clamp(60px, 10vh, 80px)" }}>
 
           {/* Badge */}
           <div className="h1" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.15)", border: "1.5px solid rgba(255,255,255,0.35)", borderRadius: 50, padding: "6px 16px", marginBottom: 16, backdropFilter: "blur(8px)" }}>
