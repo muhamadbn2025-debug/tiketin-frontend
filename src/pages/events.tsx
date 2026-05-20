@@ -137,6 +137,12 @@ export default function EventsPage({ openLogin }: EventsPageProps) {
           .filter-bar input { width:100% !important; }
           .cats-scroll { overflow-x:auto; padding-bottom:4px; }
         }
+          .hide-mobile { display:inline; }
+          .show-mobile { display:none; }
+        @media (max-width:480px) {
+          .hide-mobile { display:none !important; }FF
+          .show-mobile { display:inline !important; }
+        }
       `}</style>
 
       {/* NAVBAR */}
@@ -147,7 +153,10 @@ export default function EventsPage({ openLogin }: EventsPageProps) {
             <span style={{ fontSize: 18, fontWeight: 900, fontFamily: "'Plus Jakarta Sans',sans-serif" }} className="gradient-text">TiketIn</span>
           </div>
           <div style={{ display: "flex", gap: 10 }}>
-            <button onClick={() => navigate("/")} style={{ background: "white", color: "#7C3AED", border: "1.5px solid #DDD6FE", borderRadius: 12, padding: "8px 16px", fontWeight: 700, fontSize: 13, cursor: "pointer", fontFamily: "'Nunito',sans-serif" }}>🏠 Beranda</button>
+            <button onClick={() => navigate("/")} style={{ background: "white", color: "#7C3AED", border: "1.5px solid #DDD6FE", borderRadius: 12, padding: "8px 12px", fontWeight: 700, fontSize: 13, cursor: "pointer", fontFamily: "'Nunito',sans-serif" }}>
+              <span className="hide-mobile">🏠 Beranda</span>
+              <span className="show-mobile">🏠</span>
+            </button>
             {isLoggedIn ? (
               <button onClick={() => navigate("/dashboard")} className="btn-primary" style={{ padding: "8px 16px", fontSize: 13 }}>Dashboard →</button>
             ) : (
@@ -186,7 +195,7 @@ export default function EventsPage({ openLogin }: EventsPageProps) {
       </div>
 
       {/* FILTER BAR */}
-      <div style={{ background: "white", borderBottom: "1.5px solid #EDE9FE", padding: "16px 40px", position: "sticky", top: 64, zIndex: 40, boxShadow: "0 2px 8px rgba(124,58,237,0.06)" }}>
+      <div style={{ background: "white", borderBottom: "1.5px solid #EDE9FE", padding: "16px 40px", position: "sticky", top: 56, zIndex: 40, boxShadow: "0 2px 8px rgba(124,58,237,0.06)" }}>
         <div className="filter-bar" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
           {/* Categories */}
           <div className="cats-scroll" style={{ display: "flex", gap: 8 }}>
