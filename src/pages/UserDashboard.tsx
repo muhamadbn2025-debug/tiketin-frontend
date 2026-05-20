@@ -338,7 +338,7 @@ export default function UserDashboard() {
                     <div style={{ fontSize: 11, color: "#9CA3AF", fontWeight: 600, marginBottom: 12 }}>📅 {ev.date || ev.event_date} · 📍 {ev.venue}</div>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                       <div style={{ fontSize: 15, fontWeight: 900, color: "#7C3AED" }}>{ev.price || "Rp 750.000"}</div>
-                      <button className="btn-primary" onClick={() => setActiveTab("events")} style={{ padding: "7px 14px", fontSize: 12 }}>Beli →</button>
+                      <button className="btn-primary" onClick={() => navigate(`/booking/${ev.id || 1}`)} style={{ padding: "7px 14px", fontSize: 12 }}>Beli →</button>
                     </div>
                   </div>
                 </div>
