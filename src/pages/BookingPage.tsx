@@ -115,7 +115,7 @@ export default function BookingPage() {
 
       {/* NAVBAR */}
       <nav style={{ background: "white", borderBottom: "1.5px solid #EDE9FE", padding: "14px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 50, boxShadow: "0 2px 12px rgba(124,58,237,0.06)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12, cursor: "pointer" }} onClick={() => navigate("/userDashboard")}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, cursor: "pointer" }} onClick={() => navigate(-1)}>
           <button style={{ background: "#F5F3FF", border: "1.5px solid #DDD6FE", borderRadius: 10, width: 34, height: 34, cursor: "pointer", fontSize: 16, color: "#7C3AED", display: "flex", alignItems: "center", justifyContent: "center" }}>←</button>
           <span style={{ fontSize: 14, fontWeight: 700, color: "#6B7280" }}>Kembali ke Event</span>
         </div>

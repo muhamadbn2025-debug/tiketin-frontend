@@ -60,7 +60,19 @@ export default function UserDashboard() {
   const fetchEvents = async () => {
     try {
       const res = await axios.get("/api/events");
-      if (res.data.data?.data?.length > 0) setEvents(res.data.data.data.slice(0, 3));
+      if (res.data.data?.data?.length > 0) {
+        const apiEvents = res.data.data.data.slice(0, 6).map((e: any) => ({
+          ...e,
+          img: e.image, // ← map image ke img
+          date: new Date(e.event_date).toLocaleDateString("id-ID", {
+            day: "numeric", month: "short", year: "numeric"
+          }), // ← format tanggal
+          price: e.tickets?.[0]?.price
+            ? `Rp ${Number(e.tickets[0].price).toLocaleString("id-ID")}`
+            : "Rp 750.000",
+        }));
+        setEvents(apiEvents);
+      }
     } catch { }
   };
 
@@ -179,7 +191,7 @@ export default function UserDashboard() {
 
       {/* SIDEBAR */}
       <div className={sidebarOpen && isMobile ? "mobile-sidebar" : ""} style={{
-        width: 240, background: "white", borderRight: "1.5px solid #EDE9FE",
+        width: 240, background: "white", borderRight: "none",
         minHeight: "100vh", padding: "24px 14px", flexShrink: 0,
         boxShadow: "4px 0 20px rgba(124,58,237,0.06)",
         position: isMobile ? "fixed" : "relative",
