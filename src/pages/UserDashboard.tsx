@@ -108,7 +108,7 @@ export default function UserDashboard() {
   const formatDate = (d: string) => new Date(d).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" });
 
   return (
-    <div style={{ minHeight: "100vh", background: "#F5F3FF", fontFamily: "'Nunito', sans-serif", display: "flex" }}>
+    <div style={{ minHeight: "100vh", background: "#F5F3FF", overflowX: "hidden", fontFamily: "'Nunito', sans-serif", display: "flex" }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap');
 
@@ -167,20 +167,17 @@ export default function UserDashboard() {
         .events-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
 
         @media (max-width:768px) {
-          .stats-grid { grid-template-columns:repeat(2,1fr) !important; }
-          .events-grid { grid-template-columns:repeat(1,1fr) !important; }
-          .dash-content { padding:16px !important; }
-          .dash-navbar { padding:0 16px !important; }
-          .navbar-title { display:none !important; }
-          .ticket-card-row { flex-direction:column !important; }
-          .ticket-img { width:100% !important; height:160px !important; }
-          .ticket-info { flex-direction:column !important; gap:12px !important; align-items:flex-start !important; }
-          .ticket-price { text-align:left !important; }
-        }
+        .stats-grid { 
+        grid-template-columns:repeat(2,1fr) !important; 
+        gap:10px !important;
+      }
+        .dash-content { padding:12px !important; }
+        .events-grid { grid-template-columns:1fr !important; }
+      }
 
         .bottom-nav { display:none; }
         @media (max-width:768px) {
-          .bottom-nav { display:flex !important; position:fixed; bottom:0; left:0; right:0; background:white; border-top:1.5px solid #EDE9FE; z-index:80; padding:8px 0 12px; box-shadow:0 -4px 20px rgba(124,58,237,0.1); }
+        .bottom-nav { display:flex !important; position:fixed; bottom:0; left:0; right:0; background:white; border-top:1.5px solid #EDE9FE; z-index:80; padding:8px 0 12px; box-shadow:0 -4px 20px rgba(124,58,237,0.1); }
         }
       `}</style>
 
@@ -311,7 +308,7 @@ export default function UserDashboard() {
             ].map((s, i) => (
               <div key={i} className="stat-card" style={{ background: s.bg }}>
                 <div style={{ fontSize: 24, marginBottom: 8 }}>{s.icon}</div>
-                <div style={{ fontSize: i === 2 ? 13 : 28, fontWeight: 900, color: s.color, lineHeight: 1 }}>{s.value}</div>
+                <div style={{ fontSize: i === 2 ? 12 : 22, fontWeight: 900, color: s.color, lineHeight: 1 }}>{s.value}</div>
                 <div style={{ fontSize: 11, color: "#6B7280", fontWeight: 700, marginTop: 4 }}>{s.label}</div>
               </div>
             ))}
