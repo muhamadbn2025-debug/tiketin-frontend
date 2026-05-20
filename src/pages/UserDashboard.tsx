@@ -9,7 +9,7 @@ const upcomingEvents = [
   { id: 3, title: "We The Fest 2026", date: "12 Sep 2026", venue: "JIEXPO Kemayoran", img: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=400&h=200&fit=crop", price: "Rp 680.000", category: "Festival" },
 ];
 
-export default function UserDashboard({ openLogin }: { openLogin?: () => void }) {
+export default function UserDashboard() {
   const navigate = useNavigate();
   const [bookings, setBookings] = useState<any[]>([]);
   const [events, setEvents] = useState(upcomingEvents);
@@ -338,7 +338,7 @@ export default function UserDashboard({ openLogin }: { openLogin?: () => void })
                     <div style={{ fontSize: 11, color: "#9CA3AF", fontWeight: 600, marginBottom: 12 }}>📅 {ev.date || ev.event_date} · 📍 {ev.venue}</div>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                       <div style={{ fontSize: 15, fontWeight: 900, color: "#7C3AED" }}>{ev.price || "Rp 750.000"}</div>
-                      <button className="btn-primary" onClick={() => openLogin?.()} style={{ padding: "7px 14px", fontSize: 12 }}>Beli →</button>
+                      <button className="btn-primary" onClick={() => setActiveTab("events")} style={{ padding: "7px 14px", fontSize: 12 }}>Beli →</button>
                     </div>
                   </div>
                 </div>

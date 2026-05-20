@@ -8,7 +8,6 @@ import LoginModal from "./components/LoginModal";
 import ProtectedRoute from "./components/ProtectedRoute";
 import UserDashboard from "./pages/UserDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
-import ChatbotWidget from "./components/ChatbotWidget";
 
 function AppWrapper() {
   return (
@@ -39,7 +38,7 @@ function App() {
         <Route path="/" element={<Home openLogin={() => setShowLogin(true)} />} />
         <Route path="/dashboard" element={
           <ProtectedRoute>
-            <UserDashboard openLogin={() => setShowLogin(true)} />
+            <UserDashboard />
           </ProtectedRoute>
         } />
         <Route path="/admin/dashboard" element={
@@ -54,7 +53,7 @@ function App() {
       )}
 
       <ToastContainer position="top-right" autoClose={3000} theme="colored" />
-      <ChatbotWidget />
+      
     </>
   );
 }

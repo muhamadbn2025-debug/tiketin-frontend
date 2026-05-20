@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import heroVideo from "../assets/1275-145116912.mp4";
+import ChatbotWidget from "../components/ChatbotWidget";
 
 interface HomeProps {
   openLogin: () => void;
@@ -499,6 +500,7 @@ export default function Home({ openLogin }: HomeProps) {
           Dibuat dengan 💜 untuk para pencinta musik & event Indonesia
         </div>
       </footer>
+      <ChatbotWidget />
     </div>
   );
 }
