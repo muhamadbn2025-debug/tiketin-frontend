@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -37,6 +37,8 @@ export default function AdminDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [animateBars, setAnimateBars] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
 
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const token = localStorage.getItem("token");
@@ -48,7 +50,14 @@ export default function AdminDashboard() {
     fetchEvents();
     fetchBookings();
     setTimeout(() => setAnimateBars(true), 500);
-    return () => window.removeEventListener("resize", checkWidth);
+
+    const handleClick = (e: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
+        setShowUserMenu(false);
+      }
+    };
+    document.addEventListener("click", handleClick);
+    return () => { window.removeEventListener("resize", checkWidth); document.removeEventListener("click", handleClick); };
   }, []);
 
   const fetchEvents = async () => {
@@ -97,14 +106,70 @@ export default function AdminDashboard() {
     localStorage.removeItem("token"); localStorage.removeItem("user"); navigate("/?login=true");
   };
 
-  const totalRevenue = bookings.filter(b => b.status === "paid").reduce((s, b) => s + b.total_price, 0);
+  // ── FIX REVENUE NaN: pastikan total_price selalu number ──
+  const toNum = (v: any) => Number(v) || 0;
+  const totalRevenue = bookings.filter(b => b.status === "paid").reduce((s, b) => s + toNum(b.total_price), 0);
   const paidBookings = bookings.filter(b => b.status === "paid").length;
   const formatPrice = (p: number) => new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(p);
   const formatDate = (d: string) => new Date(d).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" });
   const maxRevenue = Math.max(...monthlyData.map(d => d.revenue));
   const filteredEvents = events.filter(e => e.title.toLowerCase().includes(searchEvent.toLowerCase()));
-  const filteredBookings = bookings.filter(b => b.booking_code.toLowerCase().includes(searchBooking.toLowerCase()) || b.user.name.toLowerCase().includes(searchBooking.toLowerCase()));
+  const filteredBookings = bookings.filter(b =>
+    b.booking_code.toLowerCase().includes(searchBooking.toLowerCase()) ||
+    b.user.name.toLowerCase().includes(searchBooking.toLowerCase())
+  );
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
+  // ── DOWNLOAD LAPORAN CSV ──
+  const downloadCSV = () => {
+    const headers = ["Kode Booking", "Nama User", "Email", "Event", "Tiket", "Qty", "Total", "Status", "Tanggal"];
+    const rows = bookings.map(b => [
+      b.booking_code,
+      b.user.name,
+      b.user.email,
+      b.event.title,
+      b.ticket.name,
+      b.quantity,
+      toNum(b.total_price),
+      b.status,
+      formatDate(b.created_at),
+    ]);
+    const csv = [headers, ...rows].map(r => r.join(",")).join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `laporan-tiketin-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success("Laporan berhasil didownload! 📊");
+  };
+
+  // ── DOWNLOAD LAPORAN TXT (summary) ──
+  const downloadSummary = () => {
+    const lines = [
+      "===== LAPORAN TIKETIN =====",
+      `Tanggal: ${new Date().toLocaleDateString("id-ID")}`,
+      "",
+      `Total Revenue: ${formatPrice(totalRevenue)}`,
+      `Total Booking: ${bookings.length}`,
+      `Booking Berhasil: ${paidBookings}`,
+      `Booking Dibatal: ${bookings.length - paidBookings}`,
+      `Total Event Aktif: ${events.length}`,
+      `Konversi: ${bookings.length > 0 ? Math.round((paidBookings / bookings.length) * 100) : 0}%`,
+      "",
+      "===== DETAIL BOOKING =====",
+      ...bookings.map(b => `${b.booking_code} | ${b.user.name} | ${b.event.title} | ${b.ticket.name} | ${formatPrice(toNum(b.total_price))} | ${b.status}`),
+    ];
+    const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `ringkasan-tiketin-${new Date().toISOString().slice(0, 10)}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success("Ringkasan berhasil didownload! 📄");
+  };
 
   return (
     <div style={{ minHeight: "100vh", background: "#F5F3FF", fontFamily: "'Nunito', sans-serif", display: "flex" }}>
@@ -115,6 +180,7 @@ export default function AdminDashboard() {
         @keyframes wiggle { 0%,100%{transform:rotate(-3deg)} 50%{transform:rotate(3deg)} }
         @keyframes modal-in { from{opacity:0;transform:scale(0.93) translateY(12px)} to{opacity:1;transform:scale(1) translateY(0)} }
         @keyframes slide-in { from{transform:translateX(-100%)} to{transform:translateX(0)} }
+        @keyframes dropdown-in { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
 
         .wiggle { animation:wiggle 2s ease-in-out infinite; }
         .gradient-text { background:linear-gradient(135deg,#7C3AED,#F59E0B); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
@@ -136,6 +202,9 @@ export default function AdminDashboard() {
         .btn-danger { background:#FEF2F2; color:#DC2626; border:1.5px solid #FECACA; border-radius:12px; font-weight:800; cursor:pointer; font-family:'Nunito',sans-serif; transition:all 0.2s; }
         .btn-danger:hover { background:#DC2626; color:white; border-color:#DC2626; }
 
+        .btn-download { background:linear-gradient(135deg,#059669,#047857); color:white; border:none; border-radius:12px; font-weight:800; cursor:pointer; font-family:'Nunito',sans-serif; transition:all 0.2s; }
+        .btn-download:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(5,150,105,0.35); }
+
         .tab-btn { padding:9px 16px; border-radius:50px; border:none; font-weight:800; font-size:12px; cursor:pointer; font-family:'Nunito',sans-serif; transition:all 0.2s; white-space:nowrap; }
         .tab-btn.active { background:linear-gradient(135deg,#7C3AED,#9333EA); color:white; box-shadow:0 4px 14px rgba(124,58,237,0.3); }
         .tab-btn:not(.active) { background:white; color:#9CA3AF; border:1.5px solid #E5E7EB; }
@@ -151,11 +220,11 @@ export default function AdminDashboard() {
 
         .modal-box { animation:modal-in 0.3s cubic-bezier(0.34,1.56,0.64,1); }
         .modal-overlay { position:fixed; inset:0; background:rgba(109,40,217,0.15); backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; z-index:200; padding:16px; }
+        .dropdown-menu { animation:dropdown-in 0.2s ease; }
 
         .sidebar-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:90; backdrop-filter:blur(4px); }
         .mobile-sidebar { animation:slide-in 0.3s ease; }
 
-        /* Stats responsive */
         .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
         .overview-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
         .report-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
@@ -190,9 +259,7 @@ export default function AdminDashboard() {
         position: isMobile ? "fixed" : "relative",
         top: 0, left: 0, zIndex: 100, height: "100vh", overflowY: "auto",
         display: isMobile && !sidebarOpen ? "none" : "block",
-        transition: "transform 0.3s ease",
       }}>
-        {/* Logo */}
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 28, paddingLeft: 4 }}>
           <div className="wiggle" style={{ display: "inline-block", flexShrink: 0 }}>
             <div style={{ width: 36, height: 36, background: "linear-gradient(135deg,#7C3AED,#F59E0B)", borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18 }}>🎫</div>
@@ -237,23 +304,49 @@ export default function AdminDashboard() {
         {/* NAVBAR */}
         <div className="admin-navbar" style={{ background: "white", borderBottom: "1.5px solid #EDE9FE", padding: "0 24px", height: 60, display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 50, boxShadow: "0 2px 12px rgba(124,58,237,0.06)" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <button onClick={e => { e.stopPropagation(); setSidebarOpen(!sidebarOpen); }} style={{ background: "#F5F3FF", border: "1.5px solid #DDD6FE", borderRadius: 10, width: 36, height: 36, cursor: "pointer", fontSize: 16, color: "#7C3AED", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>☰</button>
+            {/* Hamburger — hanya di mobile */}
+            {isMobile && (
+              <button onClick={e => { e.stopPropagation(); setSidebarOpen(!sidebarOpen); }} style={{ background: "#F5F3FF", border: "1.5px solid #DDD6FE", borderRadius: 10, width: 36, height: 36, cursor: "pointer", fontSize: 16, color: "#7C3AED", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>☰</button>
+            )}
             <div>
               <div style={{ fontSize: 15, fontWeight: 900, color: "#1F2937" }}>Admin Dashboard</div>
               <div style={{ fontSize: 10, color: "#7C3AED", fontWeight: 700 }}>⚡ Full Access</div>
             </div>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <button onClick={() => navigate("/")} className="btn-ghost hide-mobile" style={{ padding: "7px 14px", fontSize: 13 }}>🏠</button>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, background: "#F5F3FF", border: "1.5px solid #DDD6FE", borderRadius: 12, padding: "7px 12px" }}>
-              <div style={{ width: 28, height: 28, borderRadius: "50%", background: "linear-gradient(135deg,#7C3AED,#F59E0B)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 900, fontSize: 12, color: "white", flexShrink: 0 }}>
+
+          {/* ── AVATAR DROPDOWN — ganti tombol 🏠 ── */}
+          <div ref={userMenuRef} style={{ position: "relative" }} onClick={e => e.stopPropagation()}>
+            <div onClick={() => setShowUserMenu(!showUserMenu)} style={{ display: "flex", alignItems: "center", gap: 8, background: "#F5F3FF", border: "1.5px solid #DDD6FE", borderRadius: 12, padding: "7px 12px", cursor: "pointer", userSelect: "none" }}>
+              <div style={{ width: 30, height: 30, borderRadius: "50%", background: "linear-gradient(135deg,#7C3AED,#F59E0B)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 900, fontSize: 13, color: "white", flexShrink: 0 }}>
                 {user?.name?.charAt(0).toUpperCase() || "A"}
               </div>
               <div className="hide-mobile">
                 <div style={{ fontSize: 12, fontWeight: 800, color: "#1F2937" }}>{user?.name?.split(" ")[0] || "Admin"}</div>
-                <div style={{ fontSize: 9, color: "#7C3AED", fontWeight: 800 }}>⚡ Admin</div>
+                <div style={{ fontSize: 9, color: "#7C3AED", fontWeight: 800 }}>⚡ Administrator</div>
               </div>
+              <span style={{ color: "#9CA3AF", fontSize: 10, marginLeft: 2 }}>{showUserMenu ? "▲" : "▼"}</span>
             </div>
+
+            {/* Dropdown */}
+            {showUserMenu && (
+              <div className="dropdown-menu" style={{ position: "absolute", right: 0, top: 50, width: 180, background: "white", borderRadius: 16, padding: 8, zIndex: 200, boxShadow: "0 8px 32px rgba(124,58,237,0.18)", border: "1.5px solid #EDE9FE" }}>
+                <div style={{ padding: "8px 12px", marginBottom: 4 }}>
+                  <div style={{ fontSize: 13, fontWeight: 800, color: "#1F2937" }}>{user?.name || "Admin"}</div>
+                  <div style={{ fontSize: 11, color: "#9CA3AF", fontWeight: 600 }}>{user?.email || "admin@tiketin.com"}</div>
+                </div>
+                <div style={{ height: 1, background: "#EDE9FE", marginBottom: 4 }} />
+                <button onClick={() => { navigate("/"); setShowUserMenu(false); }} style={{ width: "100%", textAlign: "left", padding: "9px 12px", background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 700, color: "#1F2937", fontFamily: "'Nunito',sans-serif", borderRadius: 8, display: "flex", alignItems: "center", gap: 8 }}
+                  onMouseOver={e => (e.currentTarget.style.background = "#F5F3FF")}
+                  onMouseOut={e => (e.currentTarget.style.background = "none")}>
+                  🏠 <span>Beranda</span>
+                </button>
+                <button onClick={() => { handleLogout(); setShowUserMenu(false); }} style={{ width: "100%", textAlign: "left", padding: "9px 12px", background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 700, color: "#DC2626", fontFamily: "'Nunito',sans-serif", borderRadius: 8, display: "flex", alignItems: "center", gap: 8 }}
+                  onMouseOver={e => (e.currentTarget.style.background = "#FEF2F2")}
+                  onMouseOut={e => (e.currentTarget.style.background = "none")}>
+                  🚪 <span>Logout</span>
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
@@ -296,7 +389,6 @@ export default function AdminDashboard() {
               </div>
 
               <div className="overview-grid">
-                {/* Event terbaru */}
                 <div style={{ background: "white", borderRadius: 16, padding: 18, border: "1.5px solid #EDE9FE", boxShadow: "0 2px 12px rgba(124,58,237,0.06)" }}>
                   <h3 style={{ fontSize: 14, fontWeight: 900, color: "#1F2937", marginBottom: 14 }}>🎪 Event Terbaru</h3>
                   {events.slice(0, 3).map((ev, i) => (
@@ -311,7 +403,6 @@ export default function AdminDashboard() {
                   ))}
                 </div>
 
-                {/* Booking terbaru */}
                 <div style={{ background: "white", borderRadius: 16, padding: 18, border: "1.5px solid #EDE9FE", boxShadow: "0 2px 12px rgba(124,58,237,0.06)" }}>
                   <h3 style={{ fontSize: 14, fontWeight: 900, color: "#1F2937", marginBottom: 14 }}>🎫 Booking Terbaru</h3>
                   {bookings.slice(0, 3).map((b, i) => (
@@ -322,7 +413,7 @@ export default function AdminDashboard() {
                         <div style={{ fontSize: 10, color: "#9CA3AF", fontWeight: 600 }}>{b.booking_code}</div>
                       </div>
                       <div style={{ textAlign: "right", flexShrink: 0 }}>
-                        <div style={{ fontSize: 12, fontWeight: 900, color: "#7C3AED" }}>{formatPrice(b.total_price)}</div>
+                        <div style={{ fontSize: 12, fontWeight: 900, color: "#7C3AED" }}>{formatPrice(toNum(b.total_price))}</div>
                         <span className={`status-${b.status}`}>{b.status === "paid" ? "✅" : "❌"}</span>
                       </div>
                     </div>
@@ -346,9 +437,8 @@ export default function AdminDashboard() {
                 </div>
               </div>
 
-              {/* Event cards — mobile friendly */}
               <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                {filteredEvents.map((ev)=> (
+                {filteredEvents.map((ev) => (
                   <div key={ev.id} style={{ background: "white", borderRadius: 16, border: "1.5px solid #EDE9FE", overflow: "hidden", boxShadow: "0 2px 12px rgba(124,58,237,0.06)" }}>
                     <div className="event-card-mobile" style={{ display: "flex" }}>
                       <img src={ev.image} style={{ width: 110, height: 90, objectFit: "cover", flexShrink: 0 }} alt={ev.title} />
@@ -395,10 +485,12 @@ export default function AdminDashboard() {
                   <h2 style={{ fontSize: 18, fontWeight: 900, color: "#1F2937", marginBottom: 2 }}>🎫 Semua Booking</h2>
                   <p style={{ color: "#9CA3AF", fontWeight: 600, fontSize: 12 }}>{bookings.length} transaksi</p>
                 </div>
-                <input style={{ background: "white", border: "1.5px solid #DDD6FE", borderRadius: 12, padding: "8px 14px", color: "#1F2937", fontSize: 13, fontWeight: 600, outline: "none", fontFamily: "'Nunito',sans-serif", width: 220 }} placeholder="🔍 Cari..." value={searchBooking} onChange={e => setSearchBooking(e.target.value)} />
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
+                  <input style={{ background: "white", border: "1.5px solid #DDD6FE", borderRadius: 12, padding: "8px 14px", color: "#1F2937", fontSize: 13, fontWeight: 600, outline: "none", fontFamily: "'Nunito',sans-serif", width: 200 }} placeholder="🔍 Cari..." value={searchBooking} onChange={e => setSearchBooking(e.target.value)} />
+                  <button className="btn-download" onClick={downloadCSV} style={{ padding: "9px 16px", fontSize: 12 }}>📥 CSV</button>
+                </div>
               </div>
 
-              {/* Booking cards — mobile friendly */}
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {filteredBookings.map((b) => (
                   <div key={b.id} style={{ background: "white", borderRadius: 14, border: "1.5px solid #EDE9FE", padding: "14px 16px", boxShadow: "0 2px 12px rgba(124,58,237,0.06)" }}>
@@ -414,7 +506,7 @@ export default function AdminDashboard() {
                         <div style={{ fontSize: 13, fontWeight: 800, color: "#1F2937" }}>{b.user.name}</div>
                         <div style={{ fontSize: 11, color: "#9CA3AF", fontWeight: 600 }}>{b.event.title.slice(0, 20)}... · {b.ticket.name} ×{b.quantity}</div>
                       </div>
-                      <div style={{ fontSize: 14, fontWeight: 900, color: "#7C3AED" }}>{formatPrice(b.total_price)}</div>
+                      <div style={{ fontSize: 14, fontWeight: 900, color: "#7C3AED" }}>{formatPrice(toNum(b.total_price))}</div>
                     </div>
                   </div>
                 ))}
@@ -425,13 +517,23 @@ export default function AdminDashboard() {
           {/* ── LAPORAN ── */}
           {activeTab === "report" && (
             <div>
-              <div style={{ marginBottom: 18 }}>
-                <h2 style={{ fontSize: 18, fontWeight: 900, color: "#1F2937", marginBottom: 2 }}>📈 Laporan & Analitik</h2>
-                <p style={{ color: "#9CA3AF", fontWeight: 600, fontSize: 12 }}>Performa penjualan TiketIn</p>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18, flexWrap: "wrap", gap: 10 }}>
+                <div>
+                  <h2 style={{ fontSize: 18, fontWeight: 900, color: "#1F2937", marginBottom: 2 }}>📈 Laporan & Analitik</h2>
+                  <p style={{ color: "#9CA3AF", fontWeight: 600, fontSize: 12 }}>Performa penjualan TiketIn</p>
+                </div>
+                {/* ── TOMBOL DOWNLOAD ── */}
+                <div style={{ display: "flex", gap: 8 }}>
+                  <button className="btn-download" onClick={downloadCSV} style={{ padding: "9px 16px", fontSize: 12 }}>
+                    📥 Download CSV
+                  </button>
+                  <button className="btn-ghost" onClick={downloadSummary} style={{ padding: "9px 16px", fontSize: 12 }}>
+                    📄 Ringkasan
+                  </button>
+                </div>
               </div>
 
               <div className="report-grid" style={{ marginBottom: 16 }}>
-                {/* Bar chart */}
                 <div style={{ background: "white", borderRadius: 16, padding: 18, border: "1.5px solid #EDE9FE", boxShadow: "0 2px 12px rgba(124,58,237,0.06)" }}>
                   <h3 style={{ fontSize: 14, fontWeight: 900, color: "#1F2937", marginBottom: 16 }}>💰 Revenue 6 Bulan</h3>
                   <div style={{ display: "flex", alignItems: "flex-end", gap: 8, height: 130 }}>
@@ -449,7 +551,6 @@ export default function AdminDashboard() {
                   </div>
                 </div>
 
-                {/* Summary */}
                 <div style={{ background: "white", borderRadius: 16, padding: 18, border: "1.5px solid #EDE9FE", boxShadow: "0 2px 12px rgba(124,58,237,0.06)" }}>
                   <h3 style={{ fontSize: 14, fontWeight: 900, color: "#1F2937", marginBottom: 14 }}>📊 Ringkasan</h3>
                   <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -458,7 +559,7 @@ export default function AdminDashboard() {
                       { label: "Booking Berhasil", value: `${paidBookings} transaksi`, color: "#059669" },
                       { label: "Booking Batal", value: `${bookings.length - paidBookings} transaksi`, color: "#DC2626" },
                       { label: "Event Aktif", value: `${events.length} event`, color: "#7C3AED" },
-                      { label: "Konversi", value: `${Math.round((paidBookings / bookings.length) * 100)}%`, color: "#7C3AED" },
+                      { label: "Konversi", value: `${bookings.length > 0 ? Math.round((paidBookings / bookings.length) * 100) : 0}%`, color: "#7C3AED" },
                     ].map((item, i) => (
                       <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 12px", background: "#FAFAFA", borderRadius: 10, border: "1px solid #F3F4F6" }}>
                         <span style={{ fontSize: 12, fontWeight: 700, color: "#6B7280" }}>{item.label}</span>
@@ -469,7 +570,6 @@ export default function AdminDashboard() {
                 </div>
               </div>
 
-              {/* Top events */}
               <div style={{ background: "white", borderRadius: 16, padding: 18, border: "1.5px solid #EDE9FE", boxShadow: "0 2px 12px rgba(124,58,237,0.06)" }}>
                 <h3 style={{ fontSize: 14, fontWeight: 900, color: "#1F2937", marginBottom: 14 }}>🏆 Event Terlaris</h3>
                 <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -519,7 +619,6 @@ export default function AdminDashboard() {
               <h3 style={{ fontSize: 18, fontWeight: 900, color: "#1F2937" }}>{editEvent ? "✏️ Edit Event" : "🎪 Tambah Event"}</h3>
               <button onClick={() => setShowModal(false)} style={{ width: 30, height: 30, borderRadius: "50%", background: "#F5F3FF", border: "1.5px solid #DDD6FE", cursor: "pointer", fontSize: 14, color: "#7C3AED", display: "flex", alignItems: "center", justifyContent: "center" }}>✕</button>
             </div>
-
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               {[
                 { label: "Judul Event", key: "title", placeholder: "Nama event" },
