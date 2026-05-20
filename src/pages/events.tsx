@@ -143,11 +143,14 @@ export default function EventsPage({ openLogin }: EventsPageProps) {
           .hide-mobile { display:none !important; }
           .show-mobile { display:inline !important; }
         }
+          * { box-sizing: border-box; }
+          body { overflow-x: hidden; }
+          nav { box-sizing: border-box; }
       `}</style>
 
       {/* NAVBAR */}
       <nav style={{ position: "fixed", top: 0, width: "100%", zIndex: 100, background: "rgba(255,255,255,0.96)", backdropFilter: "blur(20px)", borderBottom: "1px solid #EDE9FE", boxShadow: "0 2px 16px rgba(124,58,237,0.08)" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 40px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px clamp(16px, 4vw, 40px)" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }} onClick={() => navigate("/")}>
             <div style={{ width: 36, height: 36, background: "linear-gradient(135deg,#7C3AED,#EC4899)", borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18 }}>🎫</div>
             <span style={{ fontSize: 18, fontWeight: 900, fontFamily: "'Plus Jakarta Sans',sans-serif" }} className="gradient-text">TiketIn</span>
@@ -160,14 +163,17 @@ export default function EventsPage({ openLogin }: EventsPageProps) {
             {isLoggedIn ? (
               <button onClick={() => navigate("/dashboard")} className="btn-primary" style={{ padding: "8px 16px", fontSize: 13 }}>Dashboard →</button>
             ) : (
-              <button onClick={openLogin} className="btn-primary" style={{ padding: "8px 20px", fontSize: 13 }}>Masuk / Daftar</button>
+              <button onClick={openLogin} className="btn-primary" style={{ padding: "8px 14px", fontSize: 13, whiteSpace: "nowrap" }}>
+                <span className="hide-mobile">Masuk / Daftar</span>
+                <span className="show-mobile">Masuk</span>
+              </button>
             )}
           </div>
         </div>
       </nav>
 
       {/* HERO */}
-      <div className="hero-section" style={{ background: "linear-gradient(135deg,#7C3AED,#EC4899,#F59E0B)", padding: "100px 40px 48px", textAlign: "center" }}>
+      <div className="hero-section" style={{ background: "linear-gradient(135deg,#7C3AED,#EC4899,#F59E0B)", padding: "clamp(80px,12vw,100px) clamp(16px,4vw,40px) clamp(32px,5vw,48px)", textAlign: "center" }}>
         <div style={{ display: "inline-block", background: "rgba(255,255,255,0.2)", border: "1.5px solid rgba(255,255,255,0.4)", borderRadius: 50, padding: "6px 18px", marginBottom: 16 }}>
           <span style={{ fontSize: 12, fontWeight: 800, color: "white", letterSpacing: "2px" }}>🎪 SEMUA EVENT</span>
         </div>
@@ -195,7 +201,7 @@ export default function EventsPage({ openLogin }: EventsPageProps) {
       </div>
 
       {/* FILTER BAR */}
-      <div style={{ background: "white", borderBottom: "1.5px solid #EDE9FE", padding: "16px 40px", position: "sticky", top: 56, zIndex: 40, boxShadow: "0 2px 8px rgba(124,58,237,0.06)" }}>
+      <div style={{ background: "white", borderBottom: "1.5px solid #EDE9FE", padding: "12px clamp(16px,4vw,40px)", position: "sticky", top: 56, zIndex: 40, boxShadow: "0 2px 8px rgba(124,58,237,0.06)" }}>
         <div className="filter-bar" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
           {/* Categories */}
           <div className="cats-scroll" style={{ display: "flex", gap: 8 }}>
@@ -218,7 +224,7 @@ export default function EventsPage({ openLogin }: EventsPageProps) {
       </div>
 
       {/* EVENT GRID */}
-      <div style={{ padding: "32px 40px", maxWidth: 1200, margin: "0 auto" }}>
+      <div style={{ padding: "24px clamp(16px,4vw,40px)", maxWidth: 1200, margin: "0 auto" }}>
 
         {loading ? (
           <div style={{ textAlign: "center", padding: "60px 0" }}>
