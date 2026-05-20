@@ -142,9 +142,6 @@ export default function Home({ openLogin }: HomeProps) {
             </div>
           </div>
           <ul className="nav-links" style={{ display: "flex", gap: 36, listStyle: "none", margin: 0, padding: 0 }}>
-            {[["Beranda", "/"], ["Event", "/events"]].map(([label, path]) => (
-              <li key={label}><Link to={path} className={scrollY > 60 ? "scrolled" : ""}>{label}</Link></li>
-            ))}
           </ul>
           <div className="nav-buttons" style={{ display: "flex", gap: 12 }}>
             <button onClick={openLogin} className="btn-ghost nav-btn-masuk" style={{ padding: "10px 22px", fontSize: 14, background: scrollY > 60 ? "white" : "rgba(255,255,255,0.15)", borderColor: scrollY > 60 ? "#DDD6FE" : "rgba(255,255,255,0.4)", color: scrollY > 60 ? "#7C3AED" : "white" }}>Masuk</button>
