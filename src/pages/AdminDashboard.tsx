@@ -34,7 +34,7 @@ export default function AdminDashboard() {
   const [deleteConfirm, setDeleteConfirm] = useState<number | null>(null);
   const [searchEvent, setSearchEvent] = useState("");
   const [searchBooking, setSearchBooking] = useState("");
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [animateBars, setAnimateBars] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -42,9 +42,13 @@ export default function AdminDashboard() {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
+    const checkWidth = () => setSidebarOpen(window.innerWidth >= 768);
+    checkWidth();
+    window.addEventListener("resize", checkWidth);
     fetchEvents();
     fetchBookings();
     setTimeout(() => setAnimateBars(true), 500);
+    return () => window.removeEventListener("resize", checkWidth);
   }, []);
 
   const fetchEvents = async () => {
@@ -100,40 +104,27 @@ export default function AdminDashboard() {
   const maxRevenue = Math.max(...monthlyData.map(d => d.revenue));
   const filteredEvents = events.filter(e => e.title.toLowerCase().includes(searchEvent.toLowerCase()));
   const filteredBookings = bookings.filter(b => b.booking_code.toLowerCase().includes(searchBooking.toLowerCase()) || b.user.name.toLowerCase().includes(searchBooking.toLowerCase()));
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
   return (
     <div style={{ minHeight: "100vh", background: "#F5F3FF", fontFamily: "'Nunito', sans-serif", display: "flex" }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Syne:wght@700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap');
 
-        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
         @keyframes slide-up { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
-        @keyframes shimmer { 0%{background-position:-200% center} 100%{background-position:200% center} }
         @keyframes wiggle { 0%,100%{transform:rotate(-3deg)} 50%{transform:rotate(3deg)} }
         @keyframes modal-in { from{opacity:0;transform:scale(0.93) translateY(12px)} to{opacity:1;transform:scale(1) translateY(0)} }
+        @keyframes slide-in { from{transform:translateX(-100%)} to{transform:translateX(0)} }
 
         .wiggle { animation:wiggle 2s ease-in-out infinite; }
-        .float-anim { animation:float 3s ease-in-out infinite; }
+        .gradient-text { background:linear-gradient(135deg,#7C3AED,#F59E0B); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
 
-        .gradient-text {
-          background:linear-gradient(135deg,#7C3AED,#F59E0B);
-          -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-        }
-
-        .sidebar-item {
-          display:flex; align-items:center; gap:12px; padding:11px 14px;
-          border-radius:14px; cursor:pointer; font-weight:700; font-size:14px;
-          transition:all 0.2s; color:#6B7280; margin-bottom:4px;
-        }
+        .sidebar-item { display:flex; align-items:center; gap:12px; padding:12px 14px; border-radius:14px; cursor:pointer; font-weight:700; font-size:14px; transition:all 0.2s; color:#6B7280; margin-bottom:4px; }
         .sidebar-item:hover { background:#EDE9FE; color:#7C3AED; }
         .sidebar-item.active { background:linear-gradient(135deg,#7C3AED,#9333EA); color:white; box-shadow:0 6px 20px rgba(124,58,237,0.3); }
 
-        .stat-card {
-          border-radius:20px; padding:22px; border:1.5px solid #EDE9FE;
-          background:white; transition:all 0.3s; animation:slide-up 0.5s ease both;
-          box-shadow:0 2px 12px rgba(124,58,237,0.06);
-        }
-        .stat-card:hover { border-color:#7C3AED; transform:translateY(-4px); box-shadow:0 12px 32px rgba(124,58,237,0.12); }
+        .stat-card { border-radius:16px; padding:16px; border:1.5px solid #EDE9FE; background:white; transition:all 0.3s; animation:slide-up 0.5s ease both; box-shadow:0 2px 12px rgba(124,58,237,0.06); }
+        .stat-card:hover { border-color:#7C3AED; transform:translateY(-3px); }
 
         .btn-primary { background:linear-gradient(135deg,#7C3AED,#9333EA); color:white; border:none; border-radius:12px; font-weight:800; cursor:pointer; font-family:'Nunito',sans-serif; transition:all 0.2s; }
         .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(124,58,237,0.35); }
@@ -145,40 +136,72 @@ export default function AdminDashboard() {
         .btn-danger { background:#FEF2F2; color:#DC2626; border:1.5px solid #FECACA; border-radius:12px; font-weight:800; cursor:pointer; font-family:'Nunito',sans-serif; transition:all 0.2s; }
         .btn-danger:hover { background:#DC2626; color:white; border-color:#DC2626; }
 
-        .tab-btn { padding:10px 22px; border-radius:50px; border:none; font-weight:800; font-size:13px; cursor:pointer; font-family:'Nunito',sans-serif; transition:all 0.2s; }
+        .tab-btn { padding:9px 16px; border-radius:50px; border:none; font-weight:800; font-size:12px; cursor:pointer; font-family:'Nunito',sans-serif; transition:all 0.2s; white-space:nowrap; }
         .tab-btn.active { background:linear-gradient(135deg,#7C3AED,#9333EA); color:white; box-shadow:0 4px 14px rgba(124,58,237,0.3); }
         .tab-btn:not(.active) { background:white; color:#9CA3AF; border:1.5px solid #E5E7EB; }
-        .tab-btn:not(.active):hover { color:#7C3AED; border-color:#DDD6FE; background:#F5F3FF; }
+        .tab-btn:not(.active):hover { color:#7C3AED; background:#F5F3FF; }
 
         .input-field { width:100%; padding:11px 14px; border-radius:12px; border:1.5px solid #DDD6FE; background:#FAFAFA; color:#1F2937; font-size:14px; font-weight:600; outline:none; box-sizing:border-box; font-family:'Nunito',sans-serif; transition:border-color 0.2s; }
         .input-field:focus { border-color:#7C3AED; background:white; }
         .input-field::placeholder { color:#9CA3AF; }
 
-        .table-row { display:grid; padding:14px 18px; border-radius:12px; transition:background 0.2s; }
-        .table-row:hover { background:#F5F3FF; }
-
-        .status-paid { background:#ECFDF5; color:#059669; border:1px solid #A7F3D0; border-radius:50px; padding:3px 10px; font-size:11px; font-weight:800; }
-        .status-cancelled { background:#FEF2F2; color:#DC2626; border:1px solid #FECACA; border-radius:50px; padding:3px 10px; font-size:11px; font-weight:800; }
-        .status-active { background:#EDE9FE; color:#7C3AED; border:1px solid #DDD6FE; border-radius:50px; padding:3px 10px; font-size:11px; font-weight:800; }
-
-        .search-input { background:white; border:1.5px solid #DDD6FE; border-radius:12px; padding:10px 16px; color:#1F2937; font-size:14px; font-weight:600; outline:none; font-family:'Nunito',sans-serif; transition:border-color 0.2s; }
-        .search-input:focus { border-color:#7C3AED; }
-        .search-input::placeholder { color:#9CA3AF; }
+        .status-paid { background:#ECFDF5; color:#059669; border:1px solid #A7F3D0; border-radius:50px; padding:3px 8px; font-size:10px; font-weight:800; display:inline-block; }
+        .status-cancelled { background:#FEF2F2; color:#DC2626; border:1px solid #FECACA; border-radius:50px; padding:3px 8px; font-size:10px; font-weight:800; display:inline-block; }
+        .status-active { background:#EDE9FE; color:#7C3AED; border:1px solid #DDD6FE; border-radius:50px; padding:3px 8px; font-size:10px; font-weight:800; display:inline-block; }
 
         .modal-box { animation:modal-in 0.3s cubic-bezier(0.34,1.56,0.64,1); }
-        .modal-overlay { position:fixed; inset:0; background:rgba(109,40,217,0.15); backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; z-index:200; }
+        .modal-overlay { position:fixed; inset:0; background:rgba(109,40,217,0.15); backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; z-index:200; padding:16px; }
+
+        .sidebar-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:90; backdrop-filter:blur(4px); }
+        .mobile-sidebar { animation:slide-in 0.3s ease; }
+
+        /* Stats responsive */
+        .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+        .overview-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+        .report-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+
+        @media (max-width:768px) {
+          .stats-grid { grid-template-columns:repeat(2,1fr) !important; }
+          .overview-grid { grid-template-columns:1fr !important; }
+          .report-grid { grid-template-columns:1fr !important; }
+          .admin-content { padding:14px !important; }
+          .admin-navbar { padding:0 14px !important; }
+          .hide-mobile { display:none !important; }
+          .event-card-mobile { flex-direction:column !important; }
+          .tabs-scroll { overflow-x:auto; padding-bottom:4px; }
+        }
+
+        .bottom-nav { display:none; }
+        @media (max-width:768px) {
+          .bottom-nav { display:flex !important; position:fixed; bottom:0; left:0; right:0; background:white; border-top:1.5px solid #EDE9FE; z-index:80; padding:8px 0 12px; box-shadow:0 -4px 20px rgba(124,58,237,0.1); }
+        }
       `}</style>
 
+      {/* SIDEBAR OVERLAY mobile */}
+      {sidebarOpen && isMobile && (
+        <div className="sidebar-overlay" onClick={() => setSidebarOpen(false)} />
+      )}
+
       {/* SIDEBAR */}
-      <div style={{ width: sidebarOpen ? 240 : 72, background: "white", borderRight: "1.5px solid #EDE9FE", minHeight: "100vh", padding: "24px 14px", flexShrink: 0, transition: "width 0.3s ease", overflow: "hidden", boxShadow: "4px 0 20px rgba(124,58,237,0.06)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 32, paddingLeft: 4 }}>
+      <div className={sidebarOpen && isMobile ? "mobile-sidebar" : ""} style={{
+        width: 230, background: "white", borderRight: "1.5px solid #EDE9FE",
+        minHeight: "100vh", padding: "20px 12px", flexShrink: 0,
+        boxShadow: "4px 0 20px rgba(124,58,237,0.06)",
+        position: isMobile ? "fixed" : "relative",
+        top: 0, left: 0, zIndex: 100, height: "100vh", overflowY: "auto",
+        display: isMobile && !sidebarOpen ? "none" : "block",
+        transition: "transform 0.3s ease",
+      }}>
+        {/* Logo */}
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 28, paddingLeft: 4 }}>
           <div className="wiggle" style={{ display: "inline-block", flexShrink: 0 }}>
-            <div style={{ width: 38, height: 38, background: "linear-gradient(135deg,#7C3AED,#F59E0B)", borderRadius: 11, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, boxShadow: "0 4px 14px rgba(124,58,237,0.35)" }}>🎫</div>
+            <div style={{ width: 36, height: 36, background: "linear-gradient(135deg,#7C3AED,#F59E0B)", borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18 }}>🎫</div>
           </div>
-          {sidebarOpen && <div style={{ fontSize: 17, fontWeight: 900, fontFamily: "'Syne',sans-serif" }} className="gradient-text">TiketIn Admin</div>}
+          <div style={{ fontSize: 15, fontWeight: 900, fontFamily: "'Plus Jakarta Sans',sans-serif" }} className="gradient-text">TiketIn Admin</div>
+          {isMobile && <button onClick={() => setSidebarOpen(false)} style={{ marginLeft: "auto", background: "none", border: "none", cursor: "pointer", fontSize: 18, color: "#9CA3AF" }}>✕</button>}
         </div>
 
-        {sidebarOpen && <div style={{ fontSize: 10, fontWeight: 800, color: "#9CA3AF", letterSpacing: "2px", marginBottom: 10, paddingLeft: 8 }}>MENU</div>}
+        <div style={{ fontSize: 10, fontWeight: 800, color: "#9CA3AF", letterSpacing: "2px", marginBottom: 8, paddingLeft: 8 }}>MENU</div>
         {[
           { icon: "📊", label: "Overview", tab: "overview" },
           { icon: "🎪", label: "Kelola Event", tab: "events" },
@@ -186,64 +209,62 @@ export default function AdminDashboard() {
           { icon: "📈", label: "Laporan", tab: "report" },
         ].map(item => (
           <div key={item.tab} className={`sidebar-item ${activeTab === item.tab ? "active" : ""}`}
-            onClick={() => setActiveTab(item.tab as any)}
-            style={{ justifyContent: sidebarOpen ? "flex-start" : "center" }}>
-            <span style={{ fontSize: 20, flexShrink: 0 }}>{item.icon}</span>
-            {sidebarOpen && <span>{item.label}</span>}
+            onClick={() => { setActiveTab(item.tab as any); if (isMobile) setSidebarOpen(false); }}>
+            <span style={{ fontSize: 18, flexShrink: 0 }}>{item.icon}</span>
+            <span>{item.label}</span>
           </div>
         ))}
 
-        <div style={{ marginTop: 16 }}>
-          <div className="sidebar-item" onClick={handleLogout} style={{ justifyContent: sidebarOpen ? "flex-start" : "center", color: "#DC2626" }}
+        <div style={{ marginTop: 12 }}>
+          <div className="sidebar-item" onClick={handleLogout} style={{ color: "#DC2626" }}
             onMouseOver={e => (e.currentTarget.style.background = "#FEF2F2")}
             onMouseOut={e => (e.currentTarget.style.background = "transparent")}>
-            <span style={{ fontSize: 20, flexShrink: 0 }}>🚪</span>
-            {sidebarOpen && <span>Logout</span>}
+            <span style={{ fontSize: 18, flexShrink: 0 }}>🚪</span>
+            <span>Logout</span>
           </div>
         </div>
 
-        {sidebarOpen && (
-          <div style={{ marginTop: 32, background: "linear-gradient(135deg,#7C3AED,#9333EA)", borderRadius: 20, padding: "18px 16px", boxShadow: "0 8px 24px rgba(124,58,237,0.3)" }}>
-            <div style={{ fontSize: 12, fontWeight: 800, color: "rgba(255,255,255,0.85)", marginBottom: 6 }}>⚡ Admin Panel</div>
-            <div style={{ fontSize: 28, fontWeight: 900, color: "white" }}>{events.length}</div>
-            <div style={{ fontSize: 11, color: "rgba(255,255,255,0.75)", fontWeight: 600 }}>total event aktif</div>
-          </div>
-        )}
+        <div style={{ marginTop: 24, background: "linear-gradient(135deg,#7C3AED,#9333EA)", borderRadius: 18, padding: "16px 14px", boxShadow: "0 8px 24px rgba(124,58,237,0.3)" }}>
+          <div style={{ fontSize: 11, fontWeight: 800, color: "rgba(255,255,255,0.85)", marginBottom: 4 }}>⚡ Admin Panel</div>
+          <div style={{ fontSize: 26, fontWeight: 900, color: "white" }}>{events.length}</div>
+          <div style={{ fontSize: 11, color: "rgba(255,255,255,0.75)", fontWeight: 600 }}>total event aktif</div>
+        </div>
       </div>
 
       {/* MAIN */}
-      <div style={{ flex: 1, minWidth: 0 }}>
+      <div style={{ flex: 1, minWidth: 0, paddingBottom: isMobile ? 72 : 0 }}>
 
         {/* NAVBAR */}
-        <div style={{ background: "white", borderBottom: "1.5px solid #EDE9FE", padding: "0 28px", height: 64, display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 50, boxShadow: "0 2px 12px rgba(124,58,237,0.06)" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-            <button onClick={() => setSidebarOpen(!sidebarOpen)} style={{ background: "#F5F3FF", border: "1.5px solid #DDD6FE", borderRadius: 10, width: 36, height: 36, cursor: "pointer", fontSize: 16, color: "#7C3AED", display: "flex", alignItems: "center", justifyContent: "center" }}>☰</button>
+        <div className="admin-navbar" style={{ background: "white", borderBottom: "1.5px solid #EDE9FE", padding: "0 24px", height: 60, display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 50, boxShadow: "0 2px 12px rgba(124,58,237,0.06)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <button onClick={e => { e.stopPropagation(); setSidebarOpen(!sidebarOpen); }} style={{ background: "#F5F3FF", border: "1.5px solid #DDD6FE", borderRadius: 10, width: 36, height: 36, cursor: "pointer", fontSize: 16, color: "#7C3AED", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>☰</button>
             <div>
-              <div style={{ fontSize: 16, fontWeight: 900, color: "#1F2937" }}>Admin Dashboard</div>
-              <div style={{ fontSize: 11, color: "#7C3AED", fontWeight: 700 }}>⚡ Full Access</div>
+              <div style={{ fontSize: 15, fontWeight: 900, color: "#1F2937" }}>Admin Dashboard</div>
+              <div style={{ fontSize: 10, color: "#7C3AED", fontWeight: 700 }}>⚡ Full Access</div>
             </div>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <button onClick={() => navigate("/")} className="btn-ghost" style={{ padding: "8px 16px", fontSize: 13 }}>🏠 Beranda</button>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, background: "#F5F3FF", border: "1.5px solid #DDD6FE", borderRadius: 12, padding: "8px 14px" }}>
-              <div style={{ width: 32, height: 32, borderRadius: "50%", background: "linear-gradient(135deg,#7C3AED,#F59E0B)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 900, fontSize: 14, color: "white" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <button onClick={() => navigate("/")} className="btn-ghost hide-mobile" style={{ padding: "7px 14px", fontSize: 13 }}>🏠</button>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, background: "#F5F3FF", border: "1.5px solid #DDD6FE", borderRadius: 12, padding: "7px 12px" }}>
+              <div style={{ width: 28, height: 28, borderRadius: "50%", background: "linear-gradient(135deg,#7C3AED,#F59E0B)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 900, fontSize: 12, color: "white", flexShrink: 0 }}>
                 {user?.name?.charAt(0).toUpperCase() || "A"}
               </div>
-              <div>
-                <div style={{ fontSize: 13, fontWeight: 800, color: "#1F2937" }}>{user?.name || "Admin"}</div>
-                <div style={{ fontSize: 10, color: "#7C3AED", fontWeight: 800 }}>⚡ Administrator</div>
+              <div className="hide-mobile">
+                <div style={{ fontSize: 12, fontWeight: 800, color: "#1F2937" }}>{user?.name?.split(" ")[0] || "Admin"}</div>
+                <div style={{ fontSize: 9, color: "#7C3AED", fontWeight: 800 }}>⚡ Admin</div>
               </div>
             </div>
           </div>
         </div>
 
-        <div style={{ padding: "28px 32px" }}>
+        {/* CONTENT */}
+        <div className="admin-content" style={{ padding: "20px 24px" }}>
 
           {/* TABS */}
-          <div style={{ display: "flex", gap: 8, marginBottom: 24 }}>
+          <div className="tabs-scroll" style={{ display: "flex", gap: 8, marginBottom: 20 }}>
             {[
               { id: "overview", label: "📊 Overview" },
-              { id: "events", label: "🎪 Kelola Event" },
+              { id: "events", label: "🎪 Event" },
               { id: "bookings", label: "🎫 Booking" },
               { id: "report", label: "📈 Laporan" },
             ].map(t => (
@@ -251,58 +272,58 @@ export default function AdminDashboard() {
             ))}
           </div>
 
-          {/* ===== OVERVIEW ===== */}
+          {/* ── OVERVIEW ── */}
           {activeTab === "overview" && (
             <div>
-              <div style={{ marginBottom: 24 }}>
-                <h2 style={{ fontSize: 22, fontWeight: 900, color: "#1F2937", marginBottom: 4 }}>Selamat datang, {user?.name}! 👋</h2>
-                <p style={{ color: "#9CA3AF", fontWeight: 600 }}>Berikut ringkasan platform TiketIn hari ini</p>
+              <div style={{ marginBottom: 20 }}>
+                <h2 style={{ fontSize: 20, fontWeight: 900, color: "#1F2937", marginBottom: 2 }}>Halo, {user?.name}! 👋</h2>
+                <p style={{ color: "#9CA3AF", fontWeight: 600, fontSize: 13 }}>Ringkasan platform TiketIn hari ini</p>
               </div>
 
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16, marginBottom: 24 }}>
+              <div className="stats-grid" style={{ marginBottom: 20 }}>
                 {[
-                  { label: "Total Revenue", value: formatPrice(totalRevenue), icon: "💰", color: "#D97706", bg: "#FFFBEB", delay: "0s" },
-                  { label: "Total Booking", value: bookings.length, icon: "🎫", color: "#7C3AED", bg: "#F5F3FF", delay: "0.08s" },
-                  { label: "Booking Sukses", value: paidBookings, icon: "✅", color: "#059669", bg: "#ECFDF5", delay: "0.16s" },
-                  { label: "Total Event", value: events.length, icon: "🎪", color: "#7C3AED", bg: "#EDE9FE", delay: "0.24s" },
+                  { label: "Revenue", value: formatPrice(totalRevenue), icon: "💰", color: "#D97706", bg: "#FFFBEB" },
+                  { label: "Booking", value: bookings.length, icon: "🎫", color: "#7C3AED", bg: "#F5F3FF" },
+                  { label: "Sukses", value: paidBookings, icon: "✅", color: "#059669", bg: "#ECFDF5" },
+                  { label: "Event", value: events.length, icon: "🎪", color: "#7C3AED", bg: "#EDE9FE" },
                 ].map((s, i) => (
-                  <div key={i} className="stat-card" style={{ animationDelay: s.delay, background: s.bg }}>
-                    <div style={{ fontSize: 28, marginBottom: 10 }}>{s.icon}</div>
-                    <div style={{ fontSize: i === 0 ? 15 : 32, fontWeight: 900, color: s.color, lineHeight: 1 }}>{s.value}</div>
-                    <div style={{ fontSize: 12, color: "#6B7280", fontWeight: 700, marginTop: 4 }}>{s.label}</div>
+                  <div key={i} className="stat-card" style={{ background: s.bg }}>
+                    <div style={{ fontSize: 22, marginBottom: 8 }}>{s.icon}</div>
+                    <div style={{ fontSize: i === 0 ? 13 : 26, fontWeight: 900, color: s.color, lineHeight: 1 }}>{s.value}</div>
+                    <div style={{ fontSize: 11, color: "#6B7280", fontWeight: 700, marginTop: 4 }}>{s.label}</div>
                   </div>
                 ))}
               </div>
 
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
-                <div style={{ background: "white", borderRadius: 20, padding: 22, border: "1.5px solid #EDE9FE", boxShadow: "0 2px 12px rgba(124,58,237,0.06)" }}>
-                  <h3 style={{ fontSize: 15, fontWeight: 900, color: "#1F2937", marginBottom: 16 }}>🎪 Event Terbaru</h3>
+              <div className="overview-grid">
+                {/* Event terbaru */}
+                <div style={{ background: "white", borderRadius: 16, padding: 18, border: "1.5px solid #EDE9FE", boxShadow: "0 2px 12px rgba(124,58,237,0.06)" }}>
+                  <h3 style={{ fontSize: 14, fontWeight: 900, color: "#1F2937", marginBottom: 14 }}>🎪 Event Terbaru</h3>
                   {events.slice(0, 3).map((ev, i) => (
-                    <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 0", borderBottom: i < 2 ? "1px solid #F3F4F6" : "none" }}>
-                      <img src={ev.image} style={{ width: 44, height: 36, borderRadius: 8, objectFit: "cover", flexShrink: 0 }} alt={ev.title} />
+                    <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 0", borderBottom: i < 2 ? "1px solid #F3F4F6" : "none" }}>
+                      <img src={ev.image} style={{ width: 40, height: 32, borderRadius: 8, objectFit: "cover", flexShrink: 0 }} alt={ev.title} />
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ fontSize: 13, fontWeight: 800, color: "#1F2937", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{ev.title}</div>
-                        <div style={{ fontSize: 11, color: "#9CA3AF", fontWeight: 600 }}>{Math.round((ev.sold_tickets / ev.total_tickets) * 100)}% terjual</div>
+                        <div style={{ fontSize: 12, fontWeight: 800, color: "#1F2937", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{ev.title}</div>
+                        <div style={{ fontSize: 10, color: "#9CA3AF", fontWeight: 600 }}>{Math.round((ev.sold_tickets / ev.total_tickets) * 100)}% terjual</div>
                       </div>
                       <span className="status-active">Aktif</span>
                     </div>
                   ))}
                 </div>
 
-                <div style={{ background: "white", borderRadius: 20, padding: 22, border: "1.5px solid #EDE9FE", boxShadow: "0 2px 12px rgba(124,58,237,0.06)" }}>
-                  <h3 style={{ fontSize: 15, fontWeight: 900, color: "#1F2937", marginBottom: 16 }}>🎫 Booking Terbaru</h3>
+                {/* Booking terbaru */}
+                <div style={{ background: "white", borderRadius: 16, padding: 18, border: "1.5px solid #EDE9FE", boxShadow: "0 2px 12px rgba(124,58,237,0.06)" }}>
+                  <h3 style={{ fontSize: 14, fontWeight: 900, color: "#1F2937", marginBottom: 14 }}>🎫 Booking Terbaru</h3>
                   {bookings.slice(0, 3).map((b, i) => (
-                    <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 0", borderBottom: i < 2 ? "1px solid #F3F4F6" : "none" }}>
-                      <div style={{ width: 36, height: 36, borderRadius: "50%", background: "linear-gradient(135deg,#7C3AED,#F59E0B)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 900, fontSize: 13, color: "white", flexShrink: 0 }}>
-                        {b.user.name.charAt(0)}
-                      </div>
+                    <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 0", borderBottom: i < 2 ? "1px solid #F3F4F6" : "none" }}>
+                      <div style={{ width: 32, height: 32, borderRadius: "50%", background: "linear-gradient(135deg,#7C3AED,#F59E0B)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 900, fontSize: 12, color: "white", flexShrink: 0 }}>{b.user.name.charAt(0)}</div>
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ fontSize: 13, fontWeight: 800, color: "#1F2937" }}>{b.user.name}</div>
-                        <div style={{ fontSize: 11, color: "#9CA3AF", fontWeight: 600 }}>{b.booking_code}</div>
+                        <div style={{ fontSize: 12, fontWeight: 800, color: "#1F2937", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{b.user.name}</div>
+                        <div style={{ fontSize: 10, color: "#9CA3AF", fontWeight: 600 }}>{b.booking_code}</div>
                       </div>
-                      <div style={{ textAlign: "right" }}>
-                        <div style={{ fontSize: 13, fontWeight: 900, color: "#7C3AED" }}>{formatPrice(b.total_price)}</div>
-                        <span className={`status-${b.status}`}>{b.status === "paid" ? "Sukses" : "Batal"}</span>
+                      <div style={{ textAlign: "right", flexShrink: 0 }}>
+                        <div style={{ fontSize: 12, fontWeight: 900, color: "#7C3AED" }}>{formatPrice(b.total_price)}</div>
+                        <span className={`status-${b.status}`}>{b.status === "paid" ? "✅" : "❌"}</span>
                       </div>
                     </div>
                   ))}
@@ -311,57 +332,54 @@ export default function AdminDashboard() {
             </div>
           )}
 
-          {/* ===== KELOLA EVENT ===== */}
+          {/* ── KELOLA EVENT ── */}
           {activeTab === "events" && (
             <div>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 22 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, flexWrap: "wrap", gap: 10 }}>
                 <div>
-                  <h2 style={{ fontSize: 22, fontWeight: 900, color: "#1F2937", marginBottom: 4 }}>🎪 Kelola Event</h2>
-                  <p style={{ color: "#9CA3AF", fontWeight: 600 }}>{events.length} event tersedia</p>
+                  <h2 style={{ fontSize: 18, fontWeight: 900, color: "#1F2937", marginBottom: 2 }}>🎪 Kelola Event</h2>
+                  <p style={{ color: "#9CA3AF", fontWeight: 600, fontSize: 12 }}>{events.length} event</p>
                 </div>
-                <div style={{ display: "flex", gap: 12 }}>
-                  <input className="search-input" placeholder="🔍 Cari event..." value={searchEvent} onChange={e => setSearchEvent(e.target.value)} style={{ width: 220 }} />
-                  <button className="btn-primary" onClick={() => { setShowModal(true); setEditEvent(null); setForm(emptyForm); }} style={{ padding: "10px 22px", fontSize: 14 }}>+ Tambah Event</button>
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                  <input style={{ background: "white", border: "1.5px solid #DDD6FE", borderRadius: 12, padding: "8px 14px", color: "#1F2937", fontSize: 13, fontWeight: 600, outline: "none", fontFamily: "'Nunito',sans-serif", width: 180 }} placeholder="🔍 Cari event..." value={searchEvent} onChange={e => setSearchEvent(e.target.value)} />
+                  <button className="btn-primary" onClick={() => { setShowModal(true); setEditEvent(null); setForm(emptyForm); }} style={{ padding: "9px 18px", fontSize: 13 }}>+ Tambah</button>
                 </div>
               </div>
 
-              <div style={{ background: "white", borderRadius: 20, border: "1.5px solid #EDE9FE", overflow: "hidden", boxShadow: "0 2px 12px rgba(124,58,237,0.06)" }}>
-                <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr 1fr", gap: 16, padding: "12px 20px", fontSize: 11, fontWeight: 800, color: "#9CA3AF", letterSpacing: "1px", textTransform: "uppercase", borderBottom: "1px solid #F3F4F6", background: "#FAFAFA" }}>
-                  <span>Event</span><span>Kategori</span><span>Tanggal</span><span>Tiket Terjual</span><span>Aksi</span>
-                </div>
+              {/* Event cards — mobile friendly */}
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                 {filteredEvents.map((ev, i) => (
-                  <div key={ev.id} className="table-row" style={{ gridTemplateColumns: "2fr 1fr 1fr 1fr 1fr", gap: 16, borderBottom: i < filteredEvents.length - 1 ? "1px solid #F9FAFB" : "none" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                      <img src={ev.image} style={{ width: 48, height: 36, borderRadius: 8, objectFit: "cover", flexShrink: 0 }} alt={ev.title} />
-                      <div>
-                        <div style={{ fontSize: 14, fontWeight: 800, color: "#1F2937" }}>{ev.title}</div>
-                        <div style={{ fontSize: 11, color: "#9CA3AF", fontWeight: 600 }}>📍 {ev.venue}</div>
-                      </div>
-                    </div>
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <span style={{ background: "#EDE9FE", color: "#7C3AED", border: "1px solid #DDD6FE", borderRadius: 50, padding: "3px 10px", fontSize: 12, fontWeight: 800 }}>{ev.category}</span>
-                    </div>
-                    <div style={{ display: "flex", alignItems: "center", fontSize: 13, color: "#6B7280", fontWeight: 600 }}>{formatDate(ev.event_date)}</div>
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <div>
-                        <div style={{ fontSize: 13, fontWeight: 800, color: "#1F2937" }}>{ev.sold_tickets.toLocaleString()} / {ev.total_tickets.toLocaleString()}</div>
-                        <div style={{ height: 5, background: "#EDE9FE", borderRadius: 99, marginTop: 5, width: 100 }}>
-                          <div style={{ height: "100%", width: `${Math.min((ev.sold_tickets / ev.total_tickets) * 100, 100)}%`, background: "linear-gradient(90deg,#7C3AED,#F59E0B)", borderRadius: 99 }} />
+                  <div key={ev.id} style={{ background: "white", borderRadius: 16, border: "1.5px solid #EDE9FE", overflow: "hidden", boxShadow: "0 2px 12px rgba(124,58,237,0.06)" }}>
+                    <div className="event-card-mobile" style={{ display: "flex" }}>
+                      <img src={ev.image} style={{ width: 110, height: 90, objectFit: "cover", flexShrink: 0 }} alt={ev.title} />
+                      <div style={{ flex: 1, padding: "12px 14px" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 4 }}>
+                          <div style={{ flex: 1, minWidth: 0 }}>
+                            <div style={{ fontSize: 13, fontWeight: 900, color: "#1F2937", lineHeight: 1.3, marginBottom: 2 }}>{ev.title}</div>
+                            <div style={{ fontSize: 11, color: "#9CA3AF", fontWeight: 600 }}>📍 {ev.venue} · {formatDate(ev.event_date)}</div>
+                          </div>
+                          <span style={{ background: "#EDE9FE", color: "#7C3AED", borderRadius: 50, padding: "2px 8px", fontSize: 10, fontWeight: 800, flexShrink: 0, marginLeft: 8 }}>{ev.category}</span>
+                        </div>
+                        <div style={{ marginBottom: 10 }}>
+                          <div style={{ fontSize: 11, color: "#6B7280", fontWeight: 600, marginBottom: 3 }}>{ev.sold_tickets.toLocaleString()} / {ev.total_tickets.toLocaleString()} tiket</div>
+                          <div style={{ height: 5, background: "#EDE9FE", borderRadius: 99 }}>
+                            <div style={{ height: "100%", width: `${Math.min((ev.sold_tickets / ev.total_tickets) * 100, 100)}%`, background: "linear-gradient(90deg,#7C3AED,#F59E0B)", borderRadius: 99 }} />
+                          </div>
+                        </div>
+                        <div style={{ display: "flex", gap: 8 }}>
+                          {deleteConfirm === ev.id ? (
+                            <>
+                              <button className="btn-danger" onClick={() => handleDelete(ev.id)} style={{ padding: "5px 12px", fontSize: 11 }}>Hapus</button>
+                              <button className="btn-ghost" onClick={() => setDeleteConfirm(null)} style={{ padding: "5px 12px", fontSize: 11 }}>Batal</button>
+                            </>
+                          ) : (
+                            <>
+                              <button className="btn-primary" onClick={() => { setEditEvent(ev); setForm({ title: ev.title, description: "", category: ev.category, location: ev.location, venue: ev.venue, event_date: ev.event_date.slice(0, 16), total_tickets: ev.total_tickets.toString(), image: ev.image }); setShowModal(true); }} style={{ padding: "5px 12px", fontSize: 11 }}>✏️ Edit</button>
+                              <button className="btn-danger" onClick={() => setDeleteConfirm(ev.id)} style={{ padding: "5px 12px", fontSize: 11 }}>🗑️</button>
+                            </>
+                          )}
                         </div>
                       </div>
-                    </div>
-                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                      {deleteConfirm === ev.id ? (
-                        <>
-                          <button className="btn-danger" onClick={() => handleDelete(ev.id)} style={{ padding: "7px 14px", fontSize: 12 }}>Hapus</button>
-                          <button className="btn-ghost" onClick={() => setDeleteConfirm(null)} style={{ padding: "7px 14px", fontSize: 12 }}>Batal</button>
-                        </>
-                      ) : (
-                        <>
-                          <button className="btn-primary" onClick={() => { setEditEvent(ev); setForm({ title: ev.title, description: "", category: ev.category, location: ev.location, venue: ev.venue, event_date: ev.event_date.slice(0, 16), total_tickets: ev.total_tickets.toString(), image: ev.image }); setShowModal(true); }} style={{ padding: "7px 14px", fontSize: 12 }}>✏️ Edit</button>
-                          <button className="btn-danger" onClick={() => setDeleteConfirm(ev.id)} style={{ padding: "7px 14px", fontSize: 12 }}>🗑️</button>
-                        </>
-                      )}
                     </div>
                   </div>
                 ))}
@@ -369,40 +387,34 @@ export default function AdminDashboard() {
             </div>
           )}
 
-          {/* ===== BOOKING ===== */}
+          {/* ── BOOKING ── */}
           {activeTab === "bookings" && (
             <div>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 22 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, flexWrap: "wrap", gap: 10 }}>
                 <div>
-                  <h2 style={{ fontSize: 22, fontWeight: 900, color: "#1F2937", marginBottom: 4 }}>🎫 Semua Booking</h2>
-                  <p style={{ color: "#9CA3AF", fontWeight: 600 }}>{bookings.length} total transaksi</p>
+                  <h2 style={{ fontSize: 18, fontWeight: 900, color: "#1F2937", marginBottom: 2 }}>🎫 Semua Booking</h2>
+                  <p style={{ color: "#9CA3AF", fontWeight: 600, fontSize: 12 }}>{bookings.length} transaksi</p>
                 </div>
-                <input className="search-input" placeholder="🔍 Cari booking / nama..." value={searchBooking} onChange={e => setSearchBooking(e.target.value)} style={{ width: 260 }} />
+                <input style={{ background: "white", border: "1.5px solid #DDD6FE", borderRadius: 12, padding: "8px 14px", color: "#1F2937", fontSize: 13, fontWeight: 600, outline: "none", fontFamily: "'Nunito',sans-serif", width: 220 }} placeholder="🔍 Cari..." value={searchBooking} onChange={e => setSearchBooking(e.target.value)} />
               </div>
 
-              <div style={{ background: "white", borderRadius: 20, border: "1.5px solid #EDE9FE", overflow: "hidden", boxShadow: "0 2px 12px rgba(124,58,237,0.06)" }}>
-                <div style={{ display: "grid", gridTemplateColumns: "1.5fr 1.5fr 1fr 1fr 1fr 1fr", gap: 12, padding: "12px 20px", fontSize: 11, fontWeight: 800, color: "#9CA3AF", letterSpacing: "1px", textTransform: "uppercase", borderBottom: "1px solid #F3F4F6", background: "#FAFAFA" }}>
-                  <span>Kode Booking</span><span>Pengguna</span><span>Event</span><span>Tiket</span><span>Total</span><span>Status</span>
-                </div>
+              {/* Booking cards — mobile friendly */}
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {filteredBookings.map((b, i) => (
-                  <div key={b.id} style={{ display: "grid", gridTemplateColumns: "1.5fr 1.5fr 1fr 1fr 1fr 1fr", gap: 12, padding: "14px 20px", borderBottom: i < filteredBookings.length - 1 ? "1px solid #F9FAFB" : "none", transition: "background 0.2s" }}
-                    onMouseOver={e => (e.currentTarget.style.background = "#FAFAFA")}
-                    onMouseOut={e => (e.currentTarget.style.background = "transparent")}>
-                    <div>
-                      <div style={{ fontSize: 13, fontWeight: 800, color: "#7C3AED" }}>{b.booking_code}</div>
-                      <div style={{ fontSize: 11, color: "#9CA3AF", fontWeight: 600 }}>{formatDate(b.created_at)}</div>
-                    </div>
-                    <div>
-                      <div style={{ fontSize: 13, fontWeight: 800, color: "#1F2937" }}>{b.user.name}</div>
-                      <div style={{ fontSize: 11, color: "#9CA3AF", fontWeight: 600 }}>{b.user.email}</div>
-                    </div>
-                    <div style={{ fontSize: 13, fontWeight: 700, color: "#6B7280", display: "flex", alignItems: "center" }}>{b.event.title.slice(0, 12)}...</div>
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <span style={{ background: "#EDE9FE", color: "#7C3AED", border: "1px solid #DDD6FE", borderRadius: 50, padding: "2px 10px", fontSize: 11, fontWeight: 800 }}>{b.ticket.name} ×{b.quantity}</span>
-                    </div>
-                    <div style={{ fontSize: 14, fontWeight: 900, color: "#7C3AED", display: "flex", alignItems: "center" }}>{formatPrice(b.total_price)}</div>
-                    <div style={{ display: "flex", alignItems: "center" }}>
+                  <div key={b.id} style={{ background: "white", borderRadius: 14, border: "1.5px solid #EDE9FE", padding: "14px 16px", boxShadow: "0 2px 12px rgba(124,58,237,0.06)" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
+                      <div>
+                        <div style={{ fontSize: 12, fontWeight: 800, color: "#7C3AED", marginBottom: 2 }}>{b.booking_code}</div>
+                        <div style={{ fontSize: 11, color: "#9CA3AF", fontWeight: 600 }}>{formatDate(b.created_at)}</div>
+                      </div>
                       <span className={`status-${b.status}`}>{b.status === "paid" ? "✅ Sukses" : "❌ Batal"}</span>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <div>
+                        <div style={{ fontSize: 13, fontWeight: 800, color: "#1F2937" }}>{b.user.name}</div>
+                        <div style={{ fontSize: 11, color: "#9CA3AF", fontWeight: 600 }}>{b.event.title.slice(0, 20)}... · {b.ticket.name} ×{b.quantity}</div>
+                      </div>
+                      <div style={{ fontSize: 14, fontWeight: 900, color: "#7C3AED" }}>{formatPrice(b.total_price)}</div>
                     </div>
                   </div>
                 ))}
@@ -410,54 +422,47 @@ export default function AdminDashboard() {
             </div>
           )}
 
-          {/* ===== LAPORAN ===== */}
+          {/* ── LAPORAN ── */}
           {activeTab === "report" && (
             <div>
-              <div style={{ marginBottom: 22 }}>
-                <h2 style={{ fontSize: 22, fontWeight: 900, color: "#1F2937", marginBottom: 4 }}>📈 Laporan & Analitik</h2>
-                <p style={{ color: "#9CA3AF", fontWeight: 600 }}>Performa penjualan TiketIn</p>
+              <div style={{ marginBottom: 18 }}>
+                <h2 style={{ fontSize: 18, fontWeight: 900, color: "#1F2937", marginBottom: 2 }}>📈 Laporan & Analitik</h2>
+                <p style={{ color: "#9CA3AF", fontWeight: 600, fontSize: 12 }}>Performa penjualan TiketIn</p>
               </div>
 
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 20 }}>
+              <div className="report-grid" style={{ marginBottom: 16 }}>
                 {/* Bar chart */}
-                <div style={{ background: "white", borderRadius: 20, padding: 24, border: "1.5px solid #EDE9FE", boxShadow: "0 2px 12px rgba(124,58,237,0.06)" }}>
-                  <h3 style={{ fontSize: 15, fontWeight: 900, color: "#1F2937", marginBottom: 20 }}>💰 Revenue 6 Bulan Terakhir</h3>
-                  <div style={{ display: "flex", alignItems: "flex-end", gap: 12, height: 160 }}>
+                <div style={{ background: "white", borderRadius: 16, padding: 18, border: "1.5px solid #EDE9FE", boxShadow: "0 2px 12px rgba(124,58,237,0.06)" }}>
+                  <h3 style={{ fontSize: 14, fontWeight: 900, color: "#1F2937", marginBottom: 16 }}>💰 Revenue 6 Bulan</h3>
+                  <div style={{ display: "flex", alignItems: "flex-end", gap: 8, height: 130 }}>
                     {monthlyData.map((d, i) => (
-                      <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 8, height: "100%" }}>
+                      <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 6, height: "100%" }}>
                         <div style={{ width: "100%", flex: 1, display: "flex", alignItems: "flex-end" }}>
-                          <div style={{
-                            width: "100%",
-                            height: animateBars ? `${(d.revenue / maxRevenue) * 100}%` : "0%",
-                            background: i === monthlyData.length - 1 ? "linear-gradient(180deg,#7C3AED,#9333EA)" : "linear-gradient(180deg,#DDD6FE,#EDE9FE)",
-                            borderRadius: "8px 8px 0 0",
-                            transition: `height 0.8s cubic-bezier(0.34,1.56,0.64,1) ${i * 0.1}s`,
-                            boxShadow: i === monthlyData.length - 1 ? "0 0 20px rgba(124,58,237,0.3)" : "none"
-                          }} />
+                          <div style={{ width: "100%", height: animateBars ? `${(d.revenue / maxRevenue) * 100}%` : "0%", background: i === monthlyData.length - 1 ? "linear-gradient(180deg,#7C3AED,#9333EA)" : "linear-gradient(180deg,#DDD6FE,#EDE9FE)", borderRadius: "6px 6px 0 0", transition: `height 0.8s cubic-bezier(0.34,1.56,0.64,1) ${i * 0.1}s` }} />
                         </div>
-                        <span style={{ fontSize: 11, fontWeight: 700, color: i === monthlyData.length - 1 ? "#7C3AED" : "#9CA3AF" }}>{d.month}</span>
+                        <span style={{ fontSize: 10, fontWeight: 700, color: i === monthlyData.length - 1 ? "#7C3AED" : "#9CA3AF" }}>{d.month}</span>
                       </div>
                     ))}
                   </div>
-                  <div style={{ marginTop: 12, padding: "10px 14px", background: "#F5F3FF", borderRadius: 12, border: "1px solid #EDE9FE", fontSize: 12, fontWeight: 800, color: "#7C3AED" }}>
-                    📈 Total 6 bulan: {formatPrice(monthlyData.reduce((s, d) => s + d.revenue, 0))}
+                  <div style={{ marginTop: 10, padding: "8px 12px", background: "#F5F3FF", borderRadius: 10, fontSize: 11, fontWeight: 800, color: "#7C3AED" }}>
+                    Total: {formatPrice(monthlyData.reduce((s, d) => s + d.revenue, 0))}
                   </div>
                 </div>
 
                 {/* Summary */}
-                <div style={{ background: "white", borderRadius: 20, padding: 24, border: "1.5px solid #EDE9FE", boxShadow: "0 2px 12px rgba(124,58,237,0.06)" }}>
-                  <h3 style={{ fontSize: 15, fontWeight: 900, color: "#1F2937", marginBottom: 20 }}>📊 Ringkasan</h3>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                <div style={{ background: "white", borderRadius: 16, padding: 18, border: "1.5px solid #EDE9FE", boxShadow: "0 2px 12px rgba(124,58,237,0.06)" }}>
+                  <h3 style={{ fontSize: 14, fontWeight: 900, color: "#1F2937", marginBottom: 14 }}>📊 Ringkasan</h3>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                     {[
                       { label: "Total Revenue", value: formatPrice(totalRevenue), color: "#D97706" },
                       { label: "Booking Berhasil", value: `${paidBookings} transaksi`, color: "#059669" },
-                      { label: "Booking Dibatal", value: `${bookings.length - paidBookings} transaksi`, color: "#DC2626" },
+                      { label: "Booking Batal", value: `${bookings.length - paidBookings} transaksi`, color: "#DC2626" },
                       { label: "Event Aktif", value: `${events.length} event`, color: "#7C3AED" },
                       { label: "Konversi", value: `${Math.round((paidBookings / bookings.length) * 100)}%`, color: "#7C3AED" },
                     ].map((item, i) => (
-                      <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "11px 14px", background: "#FAFAFA", borderRadius: 12, border: "1px solid #F3F4F6" }}>
-                        <span style={{ fontSize: 13, fontWeight: 700, color: "#6B7280" }}>{item.label}</span>
-                        <span style={{ fontSize: 14, fontWeight: 900, color: item.color }}>{item.value}</span>
+                      <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 12px", background: "#FAFAFA", borderRadius: 10, border: "1px solid #F3F4F6" }}>
+                        <span style={{ fontSize: 12, fontWeight: 700, color: "#6B7280" }}>{item.label}</span>
+                        <span style={{ fontSize: 13, fontWeight: 900, color: item.color }}>{item.value}</span>
                       </div>
                     ))}
                   </div>
@@ -465,22 +470,22 @@ export default function AdminDashboard() {
               </div>
 
               {/* Top events */}
-              <div style={{ background: "white", borderRadius: 20, padding: 24, border: "1.5px solid #EDE9FE", boxShadow: "0 2px 12px rgba(124,58,237,0.06)" }}>
-                <h3 style={{ fontSize: 15, fontWeight: 900, color: "#1F2937", marginBottom: 20 }}>🏆 Event Terlaris</h3>
-                <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-                  {events.sort((a, b) => b.sold_tickets - a.sold_tickets).map((ev, i) => (
-                    <div key={ev.id} style={{ display: "flex", alignItems: "center", gap: 14 }}>
-                      <div style={{ width: 28, height: 28, borderRadius: "50%", background: i === 0 ? "linear-gradient(135deg,#FFD700,#FFA500)" : i === 1 ? "linear-gradient(135deg,#D0D0D0,#A0A0A0)" : "linear-gradient(135deg,#CD7F32,#A0522D)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 900, fontSize: 13, color: "white", flexShrink: 0 }}>{i + 1}</div>
-                      <img src={ev.image} style={{ width: 48, height: 36, borderRadius: 8, objectFit: "cover", flexShrink: 0 }} alt={ev.title} />
+              <div style={{ background: "white", borderRadius: 16, padding: 18, border: "1.5px solid #EDE9FE", boxShadow: "0 2px 12px rgba(124,58,237,0.06)" }}>
+                <h3 style={{ fontSize: 14, fontWeight: 900, color: "#1F2937", marginBottom: 14 }}>🏆 Event Terlaris</h3>
+                <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                  {[...events].sort((a, b) => b.sold_tickets - a.sold_tickets).map((ev, i) => (
+                    <div key={ev.id} style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                      <div style={{ width: 26, height: 26, borderRadius: "50%", background: i === 0 ? "linear-gradient(135deg,#FFD700,#FFA500)" : i === 1 ? "linear-gradient(135deg,#D0D0D0,#A0A0A0)" : "linear-gradient(135deg,#CD7F32,#A0522D)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 900, fontSize: 11, color: "white", flexShrink: 0 }}>{i + 1}</div>
+                      <img src={ev.image} style={{ width: 44, height: 32, borderRadius: 8, objectFit: "cover", flexShrink: 0 }} alt={ev.title} />
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ fontSize: 14, fontWeight: 800, color: "#1F2937", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{ev.title}</div>
-                        <div style={{ height: 6, background: "#EDE9FE", borderRadius: 99, marginTop: 6 }}>
-                          <div style={{ height: "100%", width: `${(ev.sold_tickets / ev.total_tickets) * 100}%`, background: "linear-gradient(90deg,#7C3AED,#F59E0B)", borderRadius: 99, transition: "width 1s ease" }} />
+                        <div style={{ fontSize: 13, fontWeight: 800, color: "#1F2937", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{ev.title}</div>
+                        <div style={{ height: 5, background: "#EDE9FE", borderRadius: 99, marginTop: 5 }}>
+                          <div style={{ height: "100%", width: `${(ev.sold_tickets / ev.total_tickets) * 100}%`, background: "linear-gradient(90deg,#7C3AED,#F59E0B)", borderRadius: 99 }} />
                         </div>
                       </div>
                       <div style={{ textAlign: "right", flexShrink: 0 }}>
-                        <div style={{ fontSize: 14, fontWeight: 900, color: "#7C3AED" }}>{ev.sold_tickets.toLocaleString()}</div>
-                        <div style={{ fontSize: 11, color: "#9CA3AF", fontWeight: 600 }}>tiket terjual</div>
+                        <div style={{ fontSize: 13, fontWeight: 900, color: "#7C3AED" }}>{ev.sold_tickets.toLocaleString()}</div>
+                        <div style={{ fontSize: 10, color: "#9CA3AF", fontWeight: 600 }}>terjual</div>
                       </div>
                     </div>
                   ))}
@@ -491,16 +496,31 @@ export default function AdminDashboard() {
         </div>
       </div>
 
+      {/* BOTTOM NAV mobile */}
+      <div className="bottom-nav" style={{ justifyContent: "space-around", alignItems: "center" }}>
+        {[
+          { icon: "📊", label: "Overview", tab: "overview" },
+          { icon: "🎪", label: "Event", tab: "events" },
+          { icon: "🎫", label: "Booking", tab: "bookings" },
+          { icon: "📈", label: "Laporan", tab: "report" },
+        ].map((item) => (
+          <button key={item.tab} onClick={() => setActiveTab(item.tab as any)} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, background: "none", border: "none", cursor: "pointer", padding: "4px 12px", fontFamily: "'Nunito',sans-serif" }}>
+            <span style={{ fontSize: 20 }}>{item.icon}</span>
+            <span style={{ fontSize: 10, fontWeight: 700, color: activeTab === item.tab ? "#7C3AED" : "#6B7280" }}>{item.label}</span>
+          </button>
+        ))}
+      </div>
+
       {/* MODAL TAMBAH/EDIT EVENT */}
       {showModal && (
         <div className="modal-overlay" onClick={() => setShowModal(false)}>
-          <div className="modal-box" onClick={e => e.stopPropagation()} style={{ background: "white", border: "1.5px solid #DDD6FE", borderRadius: 24, padding: 32, maxWidth: 560, width: "100%", margin: "0 20px", maxHeight: "90vh", overflowY: "auto", boxShadow: "0 32px 80px rgba(124,58,237,0.2)" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
-              <h3 style={{ fontSize: 20, fontWeight: 900, color: "#1F2937" }}>{editEvent ? "✏️ Edit Event" : "🎪 Tambah Event Baru"}</h3>
-              <button onClick={() => setShowModal(false)} style={{ width: 32, height: 32, borderRadius: "50%", background: "#F5F3FF", border: "1.5px solid #DDD6FE", cursor: "pointer", fontSize: 15, color: "#7C3AED", display: "flex", alignItems: "center", justifyContent: "center" }}>✕</button>
+          <div className="modal-box" onClick={e => e.stopPropagation()} style={{ background: "white", border: "1.5px solid #DDD6FE", borderRadius: 24, padding: "24px 20px", maxWidth: 520, width: "100%", maxHeight: "90vh", overflowY: "auto", boxShadow: "0 32px 80px rgba(124,58,237,0.2)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+              <h3 style={{ fontSize: 18, fontWeight: 900, color: "#1F2937" }}>{editEvent ? "✏️ Edit Event" : "🎪 Tambah Event"}</h3>
+              <button onClick={() => setShowModal(false)} style={{ width: 30, height: 30, borderRadius: "50%", background: "#F5F3FF", border: "1.5px solid #DDD6FE", cursor: "pointer", fontSize: 14, color: "#7C3AED", display: "flex", alignItems: "center", justifyContent: "center" }}>✕</button>
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               {[
                 { label: "Judul Event", key: "title", placeholder: "Nama event" },
                 { label: "Deskripsi", key: "description", placeholder: "Deskripsi event", textarea: true },
@@ -510,7 +530,7 @@ export default function AdminDashboard() {
                 { label: "URL Gambar", key: "image", placeholder: "https://..." },
               ].map(field => (
                 <div key={field.key}>
-                  <label style={{ fontSize: 11, fontWeight: 800, color: "#9CA3AF", marginBottom: 6, display: "block", letterSpacing: "0.5px" }}>{field.label.toUpperCase()}</label>
+                  <label style={{ fontSize: 11, fontWeight: 800, color: "#9CA3AF", marginBottom: 5, display: "block", textTransform: "uppercase", letterSpacing: "0.5px" }}>{field.label}</label>
                   {field.textarea ? (
                     <textarea className="input-field" placeholder={field.placeholder} value={(form as any)[field.key]} onChange={e => setForm({ ...form, [field.key]: e.target.value })} rows={3} style={{ resize: "vertical" }} />
                   ) : (
@@ -518,24 +538,21 @@ export default function AdminDashboard() {
                   )}
                 </div>
               ))}
-
               <div>
-                <label style={{ fontSize: 11, fontWeight: 800, color: "#9CA3AF", marginBottom: 6, display: "block", letterSpacing: "0.5px" }}>KATEGORI</label>
+                <label style={{ fontSize: 11, fontWeight: 800, color: "#9CA3AF", marginBottom: 5, display: "block", textTransform: "uppercase", letterSpacing: "0.5px" }}>Kategori</label>
                 <select className="input-field" value={form.category} onChange={e => setForm({ ...form, category: e.target.value })}>
                   {["Konser", "Festival", "Olahraga", "Pameran", "Lainnya"].map(c => <option key={c}>{c}</option>)}
                 </select>
               </div>
-
               <div>
-                <label style={{ fontSize: 11, fontWeight: 800, color: "#9CA3AF", marginBottom: 6, display: "block", letterSpacing: "0.5px" }}>TANGGAL & WAKTU</label>
+                <label style={{ fontSize: 11, fontWeight: 800, color: "#9CA3AF", marginBottom: 5, display: "block", textTransform: "uppercase", letterSpacing: "0.5px" }}>Tanggal & Waktu</label>
                 <input className="input-field" type="datetime-local" value={form.event_date} onChange={e => setForm({ ...form, event_date: e.target.value })} />
               </div>
-
-              <div style={{ display: "flex", gap: 12, marginTop: 8 }}>
-                <button className="btn-primary" onClick={handleSaveEvent} disabled={loading} style={{ flex: 1, padding: "13px 0", fontSize: 15 }}>
-                  {loading ? "⏳ Menyimpan..." : editEvent ? "✅ Update Event" : "🎉 Tambah Event"}
+              <div style={{ display: "flex", gap: 10, marginTop: 4 }}>
+                <button className="btn-primary" onClick={handleSaveEvent} disabled={loading} style={{ flex: 1, padding: "12px 0", fontSize: 14 }}>
+                  {loading ? "⏳ Menyimpan..." : editEvent ? "✅ Update" : "🎉 Tambah"}
                 </button>
-                <button className="btn-ghost" onClick={() => setShowModal(false)} style={{ padding: "13px 24px", fontSize: 15 }}>Batal</button>
+                <button className="btn-ghost" onClick={() => setShowModal(false)} style={{ padding: "12px 20px", fontSize: 14 }}>Batal</button>
               </div>
             </div>
           </div>
