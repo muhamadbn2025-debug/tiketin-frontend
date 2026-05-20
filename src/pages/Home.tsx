@@ -149,16 +149,22 @@ export default function Home({ openLogin }: HomeProps) {
 
         /* ── RESPONSIVE ── */
         @media (max-width:768px) {
-          .nav-container { padding:14px 20px !important; }
+          .nav-container { padding:12px 16px !important; }
           .nav-buttons button:first-child { display:none !important; }
-          .hero-content-wrap { padding:0 16px !important; }
-          .hero-title { font-size:clamp(22px,6vw,36px) !important; }
+          .nav-buttons button:last-child { padding:9px 14px !important; font-size:13px !important; }
+          .hero-content-wrap {
+            padding:0 16px !important;
+            justify-content:center !important;
+            padding-top:0 !important;
+          }
+          .hero-title { font-size:clamp(20px,5.5vw,32px) !important; margin-bottom:6px !important; }
           .hero-search-box { padding:5px 5px 5px 14px !important; }
           .hero-search-box input { font-size:13px !important; }
           .hero-search-box button { padding:10px 14px !important; font-size:13px !important; }
-          .hero-stats { gap:0 !important; }
-          .hero-stats > div { padding:10px 12px !important; }
-          .hero-stats > div > div:nth-child(2) { font-size:16px !important; }
+          .hero-stats { gap:0 !important; border-radius:14px !important; }
+          .hero-stats > div { padding:8px 10px !important; }
+          .hero-stats > div > div:nth-child(2) { font-size:14px !important; }
+          .hero-stats > div > div:nth-child(3) { font-size:9px !important; }
           .stats-bar { padding:24px 20px !important; }
           .stats-grid { grid-template-columns:repeat(2,1fr) !important; gap:16px !important; }
           .stats-grid > div { border-right:none !important; border-bottom:1px solid rgba(255,255,255,0.2); padding-bottom:16px !important; }
@@ -221,7 +227,7 @@ export default function Home({ openLogin }: HomeProps) {
       </div>
 
       {/* ── HERO ── */}
-      <section style={{ position: "relative", height: "100vh", minHeight: 600, overflow: "hidden", paddingTop: 0 }}>
+      <section style={{ position: "relative", height: "100svh", minHeight: 560, overflow: "hidden" }}>
         <video autoPlay muted loop playsInline style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", zIndex: 0 }}>
           <source src={heroVideo} type="video/mp4" />
         </video>
@@ -230,7 +236,7 @@ export default function Home({ openLogin }: HomeProps) {
         <div className="orb-el" style={{ width: 350, height: 350, background: "rgba(255,255,255,0.08)", top: -80, right: -40, zIndex: 2 }} />
         <div className="orb-el2 orb-el" style={{ width: 280, height: 280, background: "rgba(245,158,11,0.12)", bottom: -30, left: -60, zIndex: 2 }} />
 
-        <div className="hero-content-wrap" style={{ position: "absolute", inset: 0, zIndex: 3, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "0 24px", paddingTop: "clamp(60px, 10vh, 80px)" }}>
+        <div className="hero-content-wrap" style={{ position: "absolute", inset: 0, zIndex: 3, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "0 24px", paddingTop: "clamp(20px,5vh,60px)" }}>
 
           {/* Badge */}
           <div className="h1" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.15)", border: "1.5px solid rgba(255,255,255,0.35)", borderRadius: 50, padding: "6px 16px", marginBottom: 16, backdropFilter: "blur(8px)" }}>
