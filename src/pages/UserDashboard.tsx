@@ -167,13 +167,16 @@ export default function UserDashboard() {
         .events-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
 
         @media (max-width:768px) {
-        .stats-grid { 
-        grid-template-columns:repeat(2,1fr) !important; 
-        gap:10px !important;
-      }
-        .dash-content { padding:12px !important; }
-        .events-grid { grid-template-columns:1fr !important; }
-      }
+          .stats-grid { grid-template-columns:repeat(2,1fr) !important; }
+          .events-grid { grid-template-columns:repeat(1,1fr) !important; }
+          .dash-content { padding:16px !important; }
+          .dash-navbar { padding:0 16px !important; }
+          .navbar-title { display:none !important; }
+          .ticket-card-row { flex-direction:column !important; }
+          .ticket-img { width:100% !important; height:160px !important; }
+          .ticket-info { flex-direction:column !important; gap:12px !important; align-items:flex-start !important; }
+          .ticket-price { text-align:left !important; }
+        }
 
         .bottom-nav { display:none; }
         @media (max-width:768px) {
