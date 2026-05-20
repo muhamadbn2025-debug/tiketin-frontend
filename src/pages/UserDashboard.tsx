@@ -373,7 +373,11 @@ export default function UserDashboard() {
               {events.map((ev: any, i) => (
                 <div key={ev.id || i} className="event-card">
                   <div style={{ position: "relative", height: 160, overflow: "hidden" }}>
-                    <img src={ev.img || ev.image} className="eimg" alt={ev.title} />
+                    <img
+                      src={ev.img || ev.image || "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400&h=200&fit=crop"}
+                      className="eimg"
+                      alt={ev.title}
+                    />
                     <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(30,10,60,0.7), transparent 55%)" }} />
                     <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: "linear-gradient(90deg,#7C3AED,#F59E0B)" }} />
                     <div style={{ position: "absolute", top: 10, left: 10 }}>
