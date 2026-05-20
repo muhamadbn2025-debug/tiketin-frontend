@@ -54,7 +54,11 @@ export default function Home({ openLogin }: HomeProps) {
     return () => { window.removeEventListener("scroll", handleScroll); observer.disconnect(); };
   }, []);
 
-  const filtered = activeCategory === "Semua" ? events : events.filter(e => e.category === activeCategory);
+  const filtered = events.filter(e => {
+    const matchCategory = activeCategory === "Semua" || e.category === activeCategory;
+    const matchSearch = searchQuery === "" || e.title.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchCategory && matchSearch;
+  });
 
   return (
     <div style={{ minHeight: "100vh", background: "#FAFAFF", color: "#1F2937", fontFamily: "'Nunito',sans-serif", overflowX: "hidden" }}>

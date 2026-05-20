@@ -94,7 +94,7 @@ export default function AdminDashboard() {
 
   const handleLogout = async () => {
     try { await axios.post("/api/auth/logout", {}, { headers: { Authorization: `Bearer ${token}` } }); } catch { }
-    localStorage.removeItem("token"); localStorage.removeItem("user"); navigate("/");
+    localStorage.removeItem("token"); localStorage.removeItem("user"); navigate("/?login=true");
   };
 
   const totalRevenue = bookings.filter(b => b.status === "paid").reduce((s, b) => s + b.total_price, 0);
