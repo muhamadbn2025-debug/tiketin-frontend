@@ -140,7 +140,7 @@ export default function EventsPage({ openLogin }: EventsPageProps) {
           .hide-mobile { display:inline; }
           .show-mobile { display:none; }
         @media (max-width:480px) {
-          .hide-mobile { display:none !important; }FF
+          .hide-mobile { display:none !important; }
           .show-mobile { display:inline !important; }
         }
       `}</style>
