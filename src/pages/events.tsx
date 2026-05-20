@@ -94,7 +94,7 @@ export default function EventsPage({ openLogin }: EventsPageProps) {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#FAFAFF", fontFamily: "'Nunito', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: "#FAFAFF", fontFamily: "'Nunito', sans-serif", overflowX: "hidden", maxWidth: "100vw" }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap');
 
@@ -146,6 +146,9 @@ export default function EventsPage({ openLogin }: EventsPageProps) {
           * { box-sizing: border-box; }
           body { overflow-x: hidden; }
           nav { box-sizing: border-box; }
+          *, *::before, *::after { box-sizing: border-box; }
+          html, body { overflow-x: hidden; max-width: 100vw; }
+          nav { width: 100% !important; max-width: 100vw !important; }
       `}</style>
 
       {/* NAVBAR */}
