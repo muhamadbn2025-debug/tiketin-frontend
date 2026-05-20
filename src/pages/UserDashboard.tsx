@@ -2,11 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const dummyBookings = [
-  { id: 1, booking_code: "TKT-2026-AX9K2L", event: { title: "Coldplay: Music of the Spheres", event_date: "2026-06-14T19:00:00", venue: "GBK Stadium", image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400&h=200&fit=crop" }, ticket: { name: "VIP", price: 1500000 }, quantity: 2, total_price: 3000000, status: "paid" },
-  { id: 2, booking_code: "TKT-2026-BZ7M4N", event: { title: "Jakarta Jazz Festival 2026", event_date: "2026-07-22T17:00:00", venue: "Ancol Beach City", image: "https://images.unsplash.com/photo-1415201364774-f6f0bb35f28f?w=400&h=200&fit=crop" }, ticket: { name: "Festival", price: 450000 }, quantity: 3, total_price: 1350000, status: "paid" },
-  { id: 3, booking_code: "TKT-2026-CY5P8Q", event: { title: "Soundrenaline 2026", event_date: "2026-08-30T14:00:00", venue: "GWK, Bali", image: "https://images.unsplash.com/photo-1506157786151-b8491531f063?w=400&h=200&fit=crop" }, ticket: { name: "VVIP", price: 3000000 }, quantity: 1, total_price: 3000000, status: "cancelled" },
-];
 
 const upcomingEvents = [
   { id: 1, title: "Coldplay: Music of the Spheres", date: "14 Jun 2026", venue: "GBK Stadium", img: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400&h=200&fit=crop", price: "Rp 750.000", category: "Konser" },
@@ -16,7 +11,7 @@ const upcomingEvents = [
 
 export default function UserDashboard() {
   const navigate = useNavigate();
-  const [bookings, setBookings] = useState(dummyBookings);
+  const [bookings, setBookings] = useState<any[]>([]);
   const [events, setEvents] = useState(upcomingEvents);
   const [openMenu, setOpenMenu] = useState(false);
   const [activeTab, setActiveTab] = useState<"tickets" | "events">("tickets");
