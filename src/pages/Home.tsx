@@ -142,7 +142,7 @@ export default function Home({ openLogin }: HomeProps) {
             </div>
           </div>
           <ul className="nav-links" style={{ display: "flex", gap: 36, listStyle: "none", margin: 0, padding: 0 }}>
-            {[["Beranda", "/"], ["Event", "/events"], ["Tentang", "/about"]].map(([label, path]) => (
+            {[["Beranda", "/"], ["Event", "/events"]].map(([label, path]) => (
               <li key={label}><Link to={path} className={scrollY > 60 ? "scrolled" : ""}>{label}</Link></li>
             ))}
           </ul>
