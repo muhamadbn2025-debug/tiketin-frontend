@@ -176,6 +176,7 @@ export default function UserDashboard() {
           .ticket-img { width:100% !important; height:160px !important; }
           .ticket-info { flex-direction:column !important; gap:12px !important; align-items:flex-start !important; }
           .ticket-price { text-align:left !important; }
+          .mobile-sidebar { box-shadow:none !important; border-right:none !important; }
         }
 
         .bottom-nav { display:none; }
@@ -193,7 +194,7 @@ export default function UserDashboard() {
       <div className={sidebarOpen && isMobile ? "mobile-sidebar" : ""} style={{
         width: 240, background: "white", borderRight: "none",
         minHeight: "100vh", padding: "24px 14px", flexShrink: 0,
-        boxShadow: "4px 0 20px rgba(124,58,237,0.06)",
+        boxShadow: isMobile ? "none" : "4px 0 20px rgba(124,58,237,0.06)",
         position: isMobile ? "fixed" : "relative",
         top: 0, left: 0, zIndex: 100, height: "100vh", overflowY: "auto",
         display: isMobile && !sidebarOpen ? "none" : "block",
