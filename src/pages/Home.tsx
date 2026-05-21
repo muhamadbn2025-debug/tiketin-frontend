@@ -17,12 +17,12 @@ const events = [
 ];
 
 const promos = [
-  { code: "TIKETBARU", discount: "50%", maxDisc: "Rp 150.000", desc: "Khusus pengguna baru! Diskon 50% untuk pembelian pertamamu", color: "#7C3AED", bg: "linear-gradient(135deg,#7C3AED,#9333EA)", validUntil: "31 Des 2026", type: "New User" },
-  { code: "KONSER2026", discount: "30%", maxDisc: "Rp 200.000", desc: "Diskon spesial untuk semua tiket konser kategori VIP", color: "#EC4899", bg: "linear-gradient(135deg,#EC4899,#DB2777)", validUntil: "30 Jun 2026", type: "Konser" },
-  { code: "FESTIVAL10", discount: "10%", maxDisc: "Rp 75.000", desc: "Cashback 10% untuk pembelian tiket festival manapun", color: "#F59E0B", bg: "linear-gradient(135deg,#F59E0B,#D97706)", validUntil: "31 Agt 2026", type: "Festival" },
-  { code: "GOPAYBACK", discount: "15%", maxDisc: "Rp 100.000", desc: "Cashback GoPay untuk semua transaksi via e-wallet", color: "#059669", bg: "linear-gradient(135deg,#059669,#047857)", validUntil: "30 Jul 2026", type: "E-Wallet" },
-  { code: "WEEKEND50K", discount: "Rp 50K", maxDisc: "Rp 50.000", desc: "Potongan langsung Rp 50.000 untuk pembelian di hari Sabtu & Minggu", color: "#0EA5E9", bg: "linear-gradient(135deg,#0EA5E9,#0284C7)", validUntil: "Setiap Weekend", type: "Weekend" },
-  { code: "BELI2HEMAT", discount: "25%", maxDisc: "Rp 300.000", desc: "Beli 2 tiket sekaligus, hemat 25% untuk tiket kedua", color: "#8B5CF6", bg: "linear-gradient(135deg,#8B5CF6,#7C3AED)", validUntil: "31 Des 2026", type: "Bundle" },
+  { code: "TIKETBARU", discount: "50%", maxDisc: "Rp 150.000", desc: "Khusus pengguna baru. Diskon 50% untuk pembelian pertamamu.", validUntil: "31 Des 2026", type: "New User" },
+  { code: "KONSER2026", discount: "30%", maxDisc: "Rp 200.000", desc: "Diskon spesial untuk semua tiket konser kategori VIP.", validUntil: "30 Jun 2026", type: "Konser" },
+  { code: "FESTIVAL10", discount: "10%", maxDisc: "Rp 75.000", desc: "Cashback 10% untuk pembelian tiket festival manapun.", validUntil: "31 Agt 2026", type: "Festival" },
+  { code: "GOPAYBACK", discount: "15%", maxDisc: "Rp 100.000", desc: "Cashback untuk semua transaksi via e-wallet.", validUntil: "30 Jul 2026", type: "E-Wallet" },
+  { code: "WEEKEND50K", discount: "Rp 50K", maxDisc: "Rp 50.000", desc: "Potongan langsung Rp 50.000 untuk pembelian di akhir pekan.", validUntil: "Setiap Weekend", type: "Weekend" },
+  { code: "BELI2HEMAT", discount: "25%", maxDisc: "Rp 300.000", desc: "Beli 2 tiket sekaligus, hemat 25% untuk tiket kedua.", validUntil: "31 Des 2026", type: "Bundle" },
 ];
 
 const flipCards = [
@@ -111,12 +111,12 @@ export default function Home({ openLogin }: HomeProps) {
         .flip-front,.flip-back{position:absolute;inset:0;border-radius:22px;backface-visibility:hidden;overflow:hidden}
         .flip-back{transform:rotateY(180deg)}
 
-        .promo-card{border-radius:20px;overflow:hidden;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 4px 20px rgba(0,0,0,0.1);animation:pop 0.4s ease both;cursor:pointer}
-        .promo-card:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 20px 48px rgba(0,0,0,0.15)}
+        .promo-card{border-radius:20px;overflow:hidden;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 4px 24px rgba(124,58,237,0.12);cursor:pointer;animation:pop 0.4s ease both}
+        .promo-card:hover{transform:translateY(-6px);box-shadow:0 20px 48px rgba(124,58,237,0.2)}
 
-        .copy-btn{background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:10px;padding:6px 14px;font-size:12px;font-weight:800;color:white;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.2s;backdrop-filter:blur(8px)}
-        .copy-btn:hover{background:rgba(255,255,255,0.4)}
-        .copy-btn.copied{background:rgba(255,255,255,0.9);color:#059669}
+        .copy-btn{background:rgba(255,255,255,0.2);border:1.5px solid rgba(255,255,255,0.45);border-radius:10px;padding:6px 16px;font-size:12px;font-weight:800;color:white;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.2s;backdrop-filter:blur(8px)}
+        .copy-btn:hover{background:rgba(255,255,255,0.35)}
+        .copy-btn.copied{background:rgba(255,255,255,0.95);color:#059669}
 
         .ticker-wrap{overflow:hidden;background:linear-gradient(135deg,#7C3AED,#EC4899);padding:10px 0}
         .ticker-track{display:flex;animation:ticker 30s linear infinite;width:max-content}
@@ -129,53 +129,46 @@ export default function Home({ openLogin }: HomeProps) {
         .orb-el{position:absolute;border-radius:50%;filter:blur(70px);animation:orb 10s ease-in-out infinite}
         .orb-el2{animation:orb 13s ease-in-out infinite reverse}
 
-        footer a{color:#9CA3AF;text-decoration:none;font-size:14px;font-weight:600;transition:color 0.2s}
-        footer a:hover{color:#7C3AED}
+        .footer-link{color:#9CA3AF;text-decoration:none;font-size:13px;font-weight:600;transition:color 0.2s;display:block;padding:3px 0}
+        .footer-link:hover{color:#A78BFA}
 
         @media (max-width:768px) {
-          .nav-container { padding:12px 16px !important; }
-          .nav-buttons button:first-child { display:none !important; }
-          .nav-buttons button:last-child { padding:9px 14px !important; font-size:13px !important; }
-          .hero-content-wrap { padding:60px 16px 24px !important; justify-content:center !important; }
-          .hero-title { font-size:clamp(20px,5.5vw,32px) !important; margin-bottom:6px !important; }
-          .hero-search-box { padding:5px 5px 5px 14px !important; }
-          .hero-search-box input { font-size:13px !important; }
-          .hero-search-box button { padding:10px 14px !important; font-size:13px !important; }
-          .hero-stats { gap:0 !important; border-radius:14px !important; }
-          .hero-stats > div { padding:8px 10px !important; }
-          .hero-stats > div > div:nth-child(2) { font-size:14px !important; }
-          .hero-stats > div > div:nth-child(3) { font-size:9px !important; }
-          .stats-bar { padding:24px 20px !important; }
-          .stats-grid { grid-template-columns:repeat(2,1fr) !important; gap:16px !important; }
-          .stats-grid > div { border-right:none !important; border-bottom:1px solid rgba(255,255,255,0.2); padding-bottom:16px !important; }
-          .section-pad { padding:48px 20px !important; }
-          .section-title { font-size:28px !important; }
-          .section-desc { font-size:14px !important; }
-          .section-header { flex-direction:column !important; align-items:flex-start !important; gap:14px !important; }
-          .events-grid { grid-template-columns:1fr !important; }
-          .how-grid { grid-template-columns:1fr 1fr !important; gap:12px !important; }
-          .flip-grid { grid-template-columns:1fr 1fr !important; gap:12px !important; }
-          .flip-inner { height:260px !important; }
-          .why-grid { grid-template-columns:1fr !important; gap:32px !important; }
-          .why-image { display:none !important; }
-          .promo-grid { grid-template-columns:1fr !important; }
-          .cta-section { padding:0 20px 48px !important; }
-          .cta-box { padding:40px 24px !important; border-radius:24px !important; }
-          .cta-title { font-size:28px !important; }
-          .cta-desc { font-size:15px !important; }
-          .cta-btn { padding:14px 32px !important; font-size:15px !important; }
-          .footer-container { padding:32px 20px !important; }
-          .footer-inner { flex-direction:column !important; gap:20px !important; text-align:center !important; }
-          .footer-links { justify-content:center !important; gap:20px !important; flex-wrap:wrap !important; }
-          .why-float-card { display:none !important; }
+          .nav-container{padding:12px 16px !important}
+          .nav-buttons button:first-child{display:none !important}
+          .nav-buttons button:last-child{padding:9px 14px !important;font-size:13px !important}
+          .hero-content-wrap{padding:60px 16px 24px !important;justify-content:center !important}
+          .hero-title{font-size:clamp(20px,5.5vw,32px) !important;margin-bottom:6px !important}
+          .hero-search-box{padding:5px 5px 5px 14px !important}
+          .hero-search-box input{font-size:13px !important}
+          .hero-search-box button{padding:10px 14px !important;font-size:13px !important}
+          .hero-stats > div{padding:8px 10px !important}
+          .stats-bar{padding:24px 20px !important}
+          .stats-grid{grid-template-columns:repeat(2,1fr) !important;gap:16px !important}
+          .stats-grid > div{border-right:none !important;border-bottom:1px solid rgba(255,255,255,0.2);padding-bottom:16px !important}
+          .section-pad{padding:48px 20px !important}
+          .section-title{font-size:28px !important}
+          .section-header{flex-direction:column !important;align-items:flex-start !important;gap:14px !important}
+          .events-grid{grid-template-columns:1fr !important}
+          .how-grid{grid-template-columns:1fr 1fr !important;gap:12px !important}
+          .flip-grid{grid-template-columns:1fr 1fr !important;gap:12px !important}
+          .flip-inner{height:260px !important}
+          .why-grid{grid-template-columns:1fr !important;gap:32px !important}
+          .why-image{display:none !important}
+          .promo-grid{grid-template-columns:1fr !important}
+          .cta-section{padding:0 20px 48px !important}
+          .cta-box{padding:40px 24px !important;border-radius:24px !important}
+          .cta-title{font-size:28px !important}
+          .footer-grid{grid-template-columns:1fr 1fr !important;gap:28px !important}
+          .footer-brand{grid-column:1/-1 !important}
+          .footer-bottom{flex-direction:column !important;gap:12px !important;text-align:center !important}
         }
         @media (max-width:480px) {
-          .how-grid { grid-template-columns:1fr !important; }
-          .flip-grid { grid-template-columns:1fr !important; }
+          .how-grid{grid-template-columns:1fr !important}
+          .flip-grid{grid-template-columns:1fr !important}
         }
       `}</style>
 
-      {/* NAVBAR — icon 🎫 dipertahankan */}
+      {/* ── NAVBAR (sama persis dari kode awal) ── */}
       <nav style={{ position: "fixed", top: 0, width: "100%", zIndex: 100, background: scrollY > 60 ? "rgba(255,255,255,0.96)" : "transparent", backdropFilter: scrollY > 60 ? "blur(20px)" : "none", borderBottom: scrollY > 60 ? "1px solid #EDE9FE" : "none", boxShadow: scrollY > 60 ? "0 2px 16px rgba(124,58,237,0.08)" : "none", transition: "all 0.4s ease" }}>
         <div className="nav-container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "18px 80px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -194,7 +187,7 @@ export default function Home({ openLogin }: HomeProps) {
         </div>
       </nav>
 
-      {/* TICKER — tanpa emoji */}
+      {/* ── TICKER (sama persis dari kode awal) ── */}
       <div className="ticker-wrap" style={{ paddingTop: 76 }}>
         <div className="ticker-track">
           {[...Array(2)].map((_, ri) => (
@@ -205,7 +198,7 @@ export default function Home({ openLogin }: HomeProps) {
         </div>
       </div>
 
-      {/* HERO */}
+      {/* ── HERO (sama persis dari kode awal) ── */}
       <section style={{ position: "relative", height: "100svh", minHeight: 560, overflow: "hidden" }}>
         <video autoPlay muted loop playsInline style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", zIndex: 0 }}>
           <source src={heroVideo} type="video/mp4" />
@@ -214,8 +207,7 @@ export default function Home({ openLogin }: HomeProps) {
         <div style={{ position: "absolute", inset: 0, zIndex: 2, opacity: 0.07, backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='2' fill='white'/%3E%3C/svg%3E")` }} />
         <div className="orb-el" style={{ width: 350, height: 350, background: "rgba(255,255,255,0.08)", top: -80, right: -40, zIndex: 2 }} />
         <div className="orb-el2 orb-el" style={{ width: 280, height: 280, background: "rgba(245,158,11,0.12)", bottom: -30, left: -60, zIndex: 2 }} />
-
-        <div className="hero-content-wrap" style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, zIndex: 3, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "60px 24px 24px" }}>
+        <div className="hero-content-wrap" style={{ position: "absolute", inset: 0, zIndex: 3, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "60px 24px 24px" }}>
           <div className="h1" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.15)", border: "1.5px solid rgba(255,255,255,0.35)", borderRadius: 50, padding: "6px 16px", marginBottom: 16, backdropFilter: "blur(8px)" }}>
             <span style={{ fontWeight: 800, color: "white", fontSize: 11 }}>Platform Booking Tiket #1 di Indonesia</span>
           </div>
@@ -229,34 +221,17 @@ export default function Home({ openLogin }: HomeProps) {
           <div className="h4" style={{ width: "100%", maxWidth: 580, marginBottom: 16 }}>
             <div className="hero-search-box" style={{ background: "rgba(255,255,255,0.97)", borderRadius: 18, padding: "5px 5px 5px 16px", display: "flex", alignItems: "center", gap: 8, boxShadow: "0 16px 48px rgba(0,0,0,0.25)" }}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-              <input
-                placeholder="Cari event, konser, atau artis..."
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                onKeyDown={e => e.key === "Enter" && document.getElementById("events")?.scrollIntoView({ behavior: "smooth" })}
-                style={{ flex: 1, border: "none", outline: "none", fontSize: 14, fontWeight: 600, color: "#1F2937", background: "transparent", fontFamily: "'Nunito',sans-serif", padding: "8px 0", minWidth: 0 }}
-              />
-              <button onClick={() => document.getElementById("events")?.scrollIntoView({ behavior: "smooth" })}
-                style={{ background: "linear-gradient(135deg,#7C3AED,#EC4899)", color: "white", border: "none", borderRadius: 13, padding: "11px 18px", fontWeight: 800, fontSize: 13, cursor: "pointer", fontFamily: "'Nunito',sans-serif", whiteSpace: "nowrap", flexShrink: 0 }}>
-                Cari
-              </button>
+              <input placeholder="Cari event, konser, atau artis..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} onKeyDown={e => e.key === "Enter" && document.getElementById("events")?.scrollIntoView({ behavior: "smooth" })} style={{ flex: 1, border: "none", outline: "none", fontSize: 14, fontWeight: 600, color: "#1F2937", background: "transparent", fontFamily: "'Nunito',sans-serif", padding: "8px 0", minWidth: 0 }} />
+              <button onClick={() => document.getElementById("events")?.scrollIntoView({ behavior: "smooth" })} style={{ background: "linear-gradient(135deg,#7C3AED,#EC4899)", color: "white", border: "none", borderRadius: 13, padding: "11px 18px", fontWeight: 800, fontSize: 13, cursor: "pointer", fontFamily: "'Nunito',sans-serif", whiteSpace: "nowrap", flexShrink: 0 }}>Cari</button>
             </div>
             <div style={{ display: "flex", gap: 8, marginTop: 10, flexWrap: "wrap", justifyContent: "center" }}>
               {["Konser", "Festival", "Olahraga", "Pameran"].map((cat, i) => (
-                <button key={i} onClick={() => document.getElementById("events")?.scrollIntoView({ behavior: "smooth" })}
-                  style={{ background: "rgba(255,255,255,0.18)", border: "1.5px solid rgba(255,255,255,0.35)", borderRadius: 50, padding: "5px 14px", fontSize: 11, fontWeight: 700, color: "white", cursor: "pointer", fontFamily: "'Nunito',sans-serif", backdropFilter: "blur(8px)" }}>
-                  {cat}
-                </button>
+                <button key={i} onClick={() => document.getElementById("events")?.scrollIntoView({ behavior: "smooth" })} style={{ background: "rgba(255,255,255,0.18)", border: "1.5px solid rgba(255,255,255,0.35)", borderRadius: 50, padding: "5px 14px", fontSize: 11, fontWeight: 700, color: "white", cursor: "pointer", fontFamily: "'Nunito',sans-serif", backdropFilter: "blur(8px)" }}>{cat}</button>
               ))}
             </div>
           </div>
           <div className="h4 hero-stats" style={{ display: "flex", gap: 0, background: "rgba(255,255,255,0.12)", backdropFilter: "blur(12px)", border: "1.5px solid rgba(255,255,255,0.2)", borderRadius: 16, overflow: "hidden" }}>
-            {[
-              { val: "500K+", label: "Tiket Terjual" },
-              { val: "1.200+", label: "Event" },
-              { val: "98%", label: "Kepuasan" },
-              { val: "0 Calo", label: "Dijamin" },
-            ].map((s, i, arr) => (
+            {[{ val: "500K+", label: "Tiket Terjual" }, { val: "1.200+", label: "Event" }, { val: "98%", label: "Kepuasan" }, { val: "0 Calo", label: "Dijamin" }].map((s, i, arr) => (
               <div key={i} style={{ padding: "12px 18px", textAlign: "center", borderRight: i < arr.length - 1 ? "1px solid rgba(255,255,255,0.2)" : "none" }}>
                 <div style={{ fontSize: "clamp(14px,2vw,20px)", fontWeight: 900, color: "#FFD700", fontFamily: "'Plus Jakarta Sans',sans-serif", lineHeight: 1 }}>{s.val}</div>
                 <div style={{ fontSize: 10, color: "rgba(255,255,255,0.8)", fontWeight: 700, marginTop: 3 }}>{s.label}</div>
@@ -266,15 +241,10 @@ export default function Home({ openLogin }: HomeProps) {
         </div>
       </section>
 
-      {/* STATS BAR — tanpa emoji */}
+      {/* ── STATS BAR ── */}
       <div className="stats-bar" style={{ background: "linear-gradient(135deg,#7C3AED,#EC4899)", padding: "32px 80px" }}>
         <div className="stats-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)" }}>
-          {[
-            { val: "500K+", label: "Tiket Terjual" },
-            { val: "1.200+", label: "Event Tersedia" },
-            { val: "98%", label: "Kepuasan User" },
-            { val: "0", label: "Tiket Palsu" },
-          ].map((s, i) => (
+          {[{ val: "500K+", label: "Tiket Terjual" }, { val: "1.200+", label: "Event Tersedia" }, { val: "98%", label: "Kepuasan User" }, { val: "0", label: "Tiket Palsu" }].map((s, i) => (
             <div key={i} style={{ textAlign: "center", borderRight: i < 3 ? "1px solid rgba(255,255,255,0.2)" : "none", padding: "8px 0" }}>
               <div style={{ fontSize: 30, fontWeight: 900, color: "white", fontFamily: "'Plus Jakarta Sans',sans-serif" }}>{s.val}</div>
               <div style={{ fontSize: 13, color: "rgba(255,255,255,0.85)", fontWeight: 700 }}>{s.label}</div>
@@ -283,7 +253,7 @@ export default function Home({ openLogin }: HomeProps) {
         </div>
       </div>
 
-      {/* EVENTS */}
+      {/* ── EVENTS ── */}
       <section id="events" ref={setRef("events")} className="section-pad" style={{ padding: "72px 80px", background: "#FAFAFF" }}>
         <div className={`section-anim ${visible["events"] ? "in" : ""}`}>
           <div className="section-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 32 }}>
@@ -292,7 +262,7 @@ export default function Home({ openLogin }: HomeProps) {
                 <span style={{ fontSize: 12, fontWeight: 800, color: "#7C3AED", letterSpacing: "2px", textTransform: "uppercase" }}>Event Pilihan</span>
               </div>
               <h2 className="display-font section-title" style={{ fontSize: 36, fontWeight: 900, marginBottom: 6, color: "#1F2937" }}>Event <span className="gradient-text">Paling Ditunggu</span></h2>
-              <p className="section-desc" style={{ fontSize: 15, color: "#6B7280", fontWeight: 600 }}>Jangan sampai kehabisan tiket!</p>
+              <p style={{ fontSize: 15, color: "#6B7280", fontWeight: 600 }}>Jangan sampai kehabisan tiket!</p>
             </div>
             <Link to="/events"><button className="btn-ghost" style={{ padding: "10px 24px", fontSize: 14 }}>Lihat Semua →</button></Link>
           </div>
@@ -305,16 +275,11 @@ export default function Home({ openLogin }: HomeProps) {
             {filtered.map((ev) => (
               <div key={ev.id} className="event-card">
                 <div style={{ position: "relative", height: 200, overflow: "hidden" }}>
-                  <img src={ev.img} className="eimg" alt={ev.title}
-                    onError={e => { (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=400&fit=crop"; }} />
+                  <img src={ev.img} className="eimg" alt={ev.title} onError={e => { (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=400&fit=crop"; }} />
                   <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top,rgba(30,10,60,0.75) 0%,transparent 55%)" }} />
                   <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: "linear-gradient(90deg,#7C3AED,#EC4899,#F59E0B)" }} />
-                  <div style={{ position: "absolute", top: 12, left: 12 }}>
-                    <span style={{ background: "rgba(124,58,237,0.9)", color: "white", borderRadius: 50, padding: "3px 10px", fontSize: 11, fontWeight: 900 }}>{ev.badge}</span>
-                  </div>
-                  <div style={{ position: "absolute", top: 12, right: 12 }}>
-                    <span style={{ background: "rgba(245,158,11,0.9)", color: "white", borderRadius: 50, padding: "3px 10px", fontSize: 11, fontWeight: 900 }}>{ev.category}</span>
-                  </div>
+                  <div style={{ position: "absolute", top: 12, left: 12 }}><span style={{ background: "rgba(124,58,237,0.9)", color: "white", borderRadius: 50, padding: "3px 10px", fontSize: 11, fontWeight: 900 }}>{ev.badge}</span></div>
+                  <div style={{ position: "absolute", top: 12, right: 12 }}><span style={{ background: "rgba(245,158,11,0.9)", color: "white", borderRadius: 50, padding: "3px 10px", fontSize: 11, fontWeight: 900 }}>{ev.category}</span></div>
                   <div style={{ position: "absolute", bottom: 10, left: 12, fontSize: 11, color: "rgba(255,255,255,0.85)", fontWeight: 700 }}>{ev.date} · {ev.location.split(",")[0]}</div>
                 </div>
                 <div style={{ padding: "16px 18px" }}>
@@ -335,52 +300,66 @@ export default function Home({ openLogin }: HomeProps) {
         </div>
       </section>
 
-      {/* PROMO — tanpa emoji di konten */}
-      <section id="promo" ref={setRef("promo")} className="section-pad" style={{ padding: "72px 80px", background: "white" }}>
+      {/* ── PROMO — gradient selaras, tidak norak ── */}
+      <section id="promo" ref={setRef("promo")} className="section-pad" style={{ padding: "72px 80px", background: "linear-gradient(180deg,#F5F3FF 0%,#FDF2F8 100%)" }}>
         <div className={`section-anim ${visible["promo"] ? "in" : ""}`}>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
-            <div style={{ display: "inline-block", background: "#FDF2F8", border: "1px solid #FBCFE8", borderRadius: 50, padding: "6px 18px", marginBottom: 14 }}>
-              <span style={{ fontSize: 12, fontWeight: 800, color: "#EC4899", letterSpacing: "2px", textTransform: "uppercase" }}>Promo & Voucher</span>
+            <div style={{ display: "inline-block", background: "rgba(124,58,237,0.1)", border: "1px solid #DDD6FE", borderRadius: 50, padding: "6px 18px", marginBottom: 14 }}>
+              <span style={{ fontSize: 12, fontWeight: 800, color: "#7C3AED", letterSpacing: "2px", textTransform: "uppercase" }}>Promo & Voucher</span>
             </div>
             <h2 className="display-font section-title" style={{ fontSize: 36, fontWeight: 900, marginBottom: 10, color: "#1F2937" }}>Hemat Lebih Banyak <span className="gradient-text">dengan Promo</span></h2>
-            <p className="section-desc" style={{ fontSize: 15, color: "#6B7280", fontWeight: 600 }}>Klik untuk copy kode promo, langsung pakai saat checkout</p>
+            <p style={{ fontSize: 15, color: "#6B7280", fontWeight: 600 }}>Klik untuk copy kode promo, langsung pakai saat checkout.</p>
           </div>
+
           <div className="promo-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18 }}>
-            {promos.map((promo, i) => (
-              <div key={i} className="promo-card" style={{ background: promo.bg, animationDelay: `${i * 0.07}s` }} onClick={() => handleCopy(promo.code)}>
-                <div style={{ padding: "22px 22px 16px" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}>
-                    <span style={{ background: "rgba(255,255,255,0.25)", border: "1px solid rgba(255,255,255,0.4)", borderRadius: 50, padding: "3px 12px", fontSize: 11, fontWeight: 800, color: "white" }}>{promo.type}</span>
+            {promos.map((promo, i) => {
+              // Gradient yang selaras — semua pakai purple-pink family, beda shade
+              const gradients = [
+                "linear-gradient(135deg,#6D28D9 0%,#7C3AED 50%,#9333EA 100%)",
+                "linear-gradient(135deg,#7C3AED 0%,#A855F7 100%)",
+                "linear-gradient(135deg,#9333EA 0%,#C026D3 100%)",
+                "linear-gradient(135deg,#6D28D9 0%,#EC4899 100%)",
+                "linear-gradient(135deg,#7C3AED 0%,#DB2777 100%)",
+                "linear-gradient(135deg,#4C1D95 0%,#7C3AED 100%)",
+              ];
+              return (
+                <div key={i} className="promo-card" style={{ background: gradients[i], animationDelay: `${i * 0.07}s` }} onClick={() => handleCopy(promo.code)}>
+                  <div style={{ padding: "22px 22px 16px" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}>
+                      <span style={{ background: "rgba(255,255,255,0.2)", border: "1px solid rgba(255,255,255,0.35)", borderRadius: 50, padding: "3px 12px", fontSize: 11, fontWeight: 800, color: "white" }}>{promo.type}</span>
+                    </div>
+                    <div style={{ fontSize: 32, fontWeight: 900, color: "white", fontFamily: "'Plus Jakarta Sans',sans-serif", lineHeight: 1, marginBottom: 4 }}>DISKON {promo.discount}</div>
+                    <div style={{ fontSize: 12, color: "rgba(255,255,255,0.8)", fontWeight: 600, marginBottom: 10 }}>Maks. {promo.maxDisc}</div>
+                    <p style={{ fontSize: 12, color: "rgba(255,255,255,0.85)", fontWeight: 600, lineHeight: 1.6 }}>{promo.desc}</p>
                   </div>
-                  <div style={{ fontSize: 32, fontWeight: 900, color: "white", fontFamily: "'Plus Jakarta Sans',sans-serif", lineHeight: 1, marginBottom: 4 }}>DISKON {promo.discount}</div>
-                  <div style={{ fontSize: 12, color: "rgba(255,255,255,0.85)", fontWeight: 600, marginBottom: 12 }}>Maks. {promo.maxDisc}</div>
-                  <p style={{ fontSize: 12, color: "rgba(255,255,255,0.9)", fontWeight: 600, lineHeight: 1.6 }}>{promo.desc}</p>
-                </div>
-                <div style={{ margin: "0 22px", borderTop: "1.5px dashed rgba(255,255,255,0.35)" }} />
-                <div style={{ padding: "14px 22px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <div>
-                    <div style={{ fontSize: 10, color: "rgba(255,255,255,0.7)", fontWeight: 700, marginBottom: 4 }}>KODE PROMO</div>
-                    <div style={{ fontSize: 16, fontWeight: 900, color: "white", letterSpacing: "2px", fontFamily: "'Plus Jakarta Sans',sans-serif" }}>{promo.code}</div>
-                    <div style={{ fontSize: 10, color: "rgba(255,255,255,0.65)", fontWeight: 600, marginTop: 2 }}>Berlaku: {promo.validUntil}</div>
+                  <div style={{ margin: "0 22px", borderTop: "1.5px dashed rgba(255,255,255,0.3)" }} />
+                  <div style={{ padding: "14px 22px", display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
+                    <div>
+                      <div style={{ fontSize: 9, color: "rgba(255,255,255,0.65)", fontWeight: 800, letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: 4 }}>Kode Promo</div>
+                      <div style={{ fontSize: 16, fontWeight: 900, color: "white", letterSpacing: "2px", fontFamily: "'Plus Jakarta Sans',sans-serif" }}>{promo.code}</div>
+                      <div style={{ fontSize: 10, color: "rgba(255,255,255,0.6)", fontWeight: 600, marginTop: 2 }}>Berlaku s.d. {promo.validUntil}</div>
+                      <div style={{ fontSize: 10, color: "rgba(255,255,255,0.55)", fontWeight: 700, marginTop: 1 }}>*S&K Berlaku</div>
+                    </div>
+                    <button className={`copy-btn ${copiedCode === promo.code ? "copied" : ""}`} onClick={e => { e.stopPropagation(); handleCopy(promo.code); }}>
+                      {copiedCode === promo.code ? "Disalin!" : "Copy"}
+                    </button>
                   </div>
-                  <button className={`copy-btn ${copiedCode === promo.code ? "copied" : ""}`} onClick={e => { e.stopPropagation(); handleCopy(promo.code); }}>
-                    {copiedCode === promo.code ? "Disalin!" : "Copy"}
-                  </button>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
-          <div style={{ marginTop: 28, background: "linear-gradient(135deg,#F5F3FF,#FDF2F8)", borderRadius: 20, padding: "20px 28px", border: "1.5px solid #EDE9FE", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 14 }}>
+
+          <div style={{ marginTop: 28, background: "linear-gradient(135deg,#7C3AED,#EC4899)", borderRadius: 20, padding: "20px 28px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 14, boxShadow: "0 8px 32px rgba(124,58,237,0.2)" }}>
             <div>
-              <div style={{ fontSize: 15, fontWeight: 900, color: "#1F2937", marginBottom: 4 }}>Promo member baru — diskon 50% tiket pertamamu!</div>
-              <div style={{ fontSize: 13, color: "#6B7280", fontWeight: 600 }}>Daftar sekarang dan langsung pakai kode <strong style={{ color: "#7C3AED" }}>TIKETBARU</strong> saat checkout</div>
+              <div style={{ fontSize: 15, fontWeight: 900, color: "white", marginBottom: 4 }}>Promo member baru — diskon 50% tiket pertamamu!</div>
+              <div style={{ fontSize: 13, color: "rgba(255,255,255,0.85)", fontWeight: 600 }}>Daftar sekarang dan pakai kode <strong style={{ color: "#FFD700" }}>TIKETBARU</strong> saat checkout. *S&K berlaku.</div>
             </div>
-            <button onClick={openLogin} className="btn-primary" style={{ padding: "11px 24px", fontSize: 14, borderRadius: 14 }}>Daftar & Klaim →</button>
+            <button onClick={openLogin} style={{ background: "white", color: "#7C3AED", border: "none", borderRadius: 50, padding: "11px 24px", fontSize: 14, fontWeight: 800, cursor: "pointer", fontFamily: "'Nunito',sans-serif", whiteSpace: "nowrap", transition: "all 0.2s" }}>Daftar & Klaim →</button>
           </div>
         </div>
       </section>
 
-      {/* HOW IT WORKS — tanpa emoji di konten */}
+      {/* ── HOW IT WORKS ── */}
       <section id="how" ref={setRef("how")} className="section-pad" style={{ padding: "72px 80px", background: "#FAFAFF" }}>
         <div className={`section-anim ${visible["how"] ? "in" : ""}`}>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
@@ -388,30 +367,31 @@ export default function Home({ openLogin }: HomeProps) {
               <span style={{ fontSize: 12, fontWeight: 800, color: "#EC4899", letterSpacing: "2px", textTransform: "uppercase" }}>Cara Kerja</span>
             </div>
             <h2 className="display-font section-title" style={{ fontSize: 36, fontWeight: 900, marginBottom: 10, color: "#1F2937" }}>Booking Tiket <span className="gradient-text">Semudah 1-2-3</span></h2>
-            <p className="section-desc" style={{ fontSize: 15, color: "#6B7280", fontWeight: 600 }}>Proses cepat, aman, dan langsung ke tanganmu</p>
+            <p style={{ fontSize: 15, color: "#6B7280", fontWeight: 600 }}>Proses cepat, aman, dan langsung ke tanganmu</p>
           </div>
           <div className="how-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 18 }}>
             {[
               { step: "01", title: "Cari Event", desc: "Browse ratusan event konser dan festival terbaik di Indonesia", color: "#7C3AED", bg: "#F5F3FF" },
-              { step: "02", title: "Pilih Tiket", desc: "Pilih kategori tiket sesuai budget dan preferensimu", color: "#EC4899", bg: "#FDF2F8" },
-              { step: "03", title: "Bayar Aman", desc: "Bayar dengan metode pembayaran yang aman dan terenkripsi", color: "#F59E0B", bg: "#FFFBEB" },
-              { step: "04", title: "E-Ticket Siap", desc: "E-ticket langsung ke email, tinggal scan QR di pintu masuk", color: "#059669", bg: "#ECFDF5" },
+              { step: "02", title: "Pilih Tiket", desc: "Pilih kategori tiket sesuai budget dan preferensimu", color: "#9333EA", bg: "#F3E8FF" },
+              { step: "03", title: "Bayar Aman", desc: "Bayar dengan metode pembayaran yang aman dan terenkripsi", color: "#EC4899", bg: "#FDF2F8" },
+              { step: "04", title: "E-Ticket Siap", desc: "E-ticket langsung ke email, tinggal scan QR di pintu masuk", color: "#A855F7", bg: "#FAF5FF" },
             ].map((item, i) => (
               <div key={i} style={{ background: item.bg, borderRadius: 20, padding: "28px 20px", textAlign: "center", border: `1.5px solid ${item.color}20`, transition: "all 0.3s", position: "relative" }}
-                onMouseOver={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(-6px)"; }}
-                onMouseOut={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; }}>
-                <div style={{ fontSize: 11, fontWeight: 900, color: item.color, letterSpacing: "2px", marginBottom: 14, opacity: 0.7 }}>{item.step}</div>
-                <div style={{ width: 48, height: 48, background: item.color, borderRadius: 14, margin: "0 auto 16px", opacity: 0.15 }} />
+                onMouseOver={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(-6px)"; (e.currentTarget as HTMLElement).style.boxShadow = `0 16px 40px ${item.color}20`; }}
+                onMouseOut={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}>
+                <div style={{ width: 44, height: 44, background: `linear-gradient(135deg,${item.color},#EC4899)`, borderRadius: 14, margin: "0 auto 16px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <span style={{ fontSize: 13, fontWeight: 900, color: "white" }}>{item.step}</span>
+                </div>
                 <h3 style={{ fontSize: 16, fontWeight: 900, color: "#1F2937", marginBottom: 8 }}>{item.title}</h3>
                 <p style={{ fontSize: 13, color: "#6B7280", lineHeight: 1.7, fontWeight: 600 }}>{item.desc}</p>
-                {i < 3 && <div style={{ position: "absolute", top: "45%", right: -10, width: 18, height: 2, background: `linear-gradient(90deg,${item.color},#EC4899)`, zIndex: 10 }} />}
+                {i < 3 && <div style={{ position: "absolute", top: "38px", right: -10, width: 18, height: 2, background: `linear-gradient(90deg,${item.color},#EC4899)`, zIndex: 10 }} />}
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* FLIP CARDS — tanpa icon emoji di konten */}
+      {/* ── FLIP CARDS (sama dari kode awal) ── */}
       <section id="flip" ref={setRef("flip")} className="section-pad" style={{ padding: "72px 80px", background: "white" }}>
         <div className={`section-anim ${visible["flip"] ? "in" : ""}`}>
           <div style={{ textAlign: "center", marginBottom: 44 }}>
@@ -419,7 +399,7 @@ export default function Home({ openLogin }: HomeProps) {
               <span style={{ fontSize: 12, fontWeight: 800, color: "#7C3AED", letterSpacing: "2px", textTransform: "uppercase" }}>Untuk Siapa?</span>
             </div>
             <h2 className="display-font section-title" style={{ fontSize: 36, fontWeight: 900, marginBottom: 10, color: "#1F2937" }}>TiketIn untuk <span className="gradient-text">Semua Orang</span></h2>
-            <p className="section-desc" style={{ fontSize: 15, color: "#6B7280", fontWeight: 600 }}>Hover kartu untuk tahu lebih lanjut</p>
+            <p style={{ fontSize: 15, color: "#6B7280", fontWeight: 600 }}>Hover kartu untuk tahu lebih lanjut</p>
           </div>
           <div className="flip-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 18 }}>
             {flipCards.map((card, i) => (
@@ -437,9 +417,9 @@ export default function Home({ openLogin }: HomeProps) {
                     </div>
                   </div>
                   <div className="flip-back" style={{ background: "white", border: `1.5px solid ${card.color}30` }}>
-                    <div style={{ padding: "26px 22px", height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between", position: "relative", overflow: "hidden", background: `linear-gradient(135deg,white,${card.color}08)` }}>
+                    <div style={{ padding: "26px 22px", height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between", background: `linear-gradient(135deg,white,${card.color}08)` }}>
                       <div>
-                        <div style={{ width: 40, height: 4, background: card.color, borderRadius: 99, marginBottom: 16 }} />
+                        <div style={{ width: 40, height: 4, background: `linear-gradient(90deg,${card.color},#EC4899)`, borderRadius: 99, marginBottom: 16 }} />
                         <h3 style={{ fontSize: 20, fontWeight: 900, color: "#1F2937", marginBottom: 10, fontFamily: "'Plus Jakarta Sans',sans-serif" }}>{card.title}</h3>
                         <p style={{ fontSize: 13, color: "#6B7280", lineHeight: 1.8, fontWeight: 600 }}>{card.desc}</p>
                       </div>
@@ -453,8 +433,8 @@ export default function Home({ openLogin }: HomeProps) {
         </div>
       </section>
 
-      {/* WHY — tanpa emoji */}
-      <section id="why" ref={setRef("why")} className="section-pad" style={{ padding: "72px 80px", background: "#FAFAFF" }}>
+      {/* ── WHY TIKETIN ── */}
+      <section id="why" ref={setRef("why")} className="section-pad" style={{ padding: "72px 80px", background: "linear-gradient(180deg,#F5F3FF 0%,#FAFAFF 100%)" }}>
         <div className={`section-anim ${visible["why"] ? "in" : ""}`}>
           <div className="why-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 56, alignItems: "center" }}>
             <div>
@@ -467,14 +447,14 @@ export default function Home({ openLogin }: HomeProps) {
               <p style={{ fontSize: 15, color: "#6B7280", lineHeight: 1.8, marginBottom: 28, fontWeight: 600 }}>Antri panjang, calo merajalela, tiket palsu — TiketIn hadir untuk mengakhiri semua masalah itu sekaligus.</p>
               <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
                 {[
-                  { title: "Anti Calo & Tiket Palsu", desc: "Semua tiket terverifikasi dari penyelenggara resmi", color: "#7C3AED", bg: "#F5F3FF" },
-                  { title: "Harga Transparan", desc: "Tidak ada biaya tersembunyi — harga yang tertera yang kamu bayar", color: "#F59E0B", bg: "#FFFBEB" },
-                  { title: "Notifikasi Real-time", desc: "Dapat info event & reminder sebelum tiket sold out", color: "#EC4899", bg: "#FDF2F8" },
-                  { title: "Dashboard Lengkap", desc: "Kelola semua tiketmu dalam satu tempat yang mudah", color: "#059669", bg: "#ECFDF5" },
+                  { title: "Anti Calo & Tiket Palsu", desc: "Semua tiket terverifikasi dari penyelenggara resmi", grad: "linear-gradient(135deg,#7C3AED,#9333EA)" },
+                  { title: "Harga Transparan", desc: "Tidak ada biaya tersembunyi — harga yang tertera yang kamu bayar", grad: "linear-gradient(135deg,#9333EA,#A855F7)" },
+                  { title: "Notifikasi Real-time", desc: "Dapat info event & reminder sebelum tiket sold out", grad: "linear-gradient(135deg,#EC4899,#7C3AED)" },
+                  { title: "Dashboard Lengkap", desc: "Kelola semua tiketmu dalam satu tempat yang mudah", grad: "linear-gradient(135deg,#7C3AED,#EC4899)" },
                 ].map((item, i) => (
                   <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 14 }}>
-                    <div style={{ width: 42, height: 42, background: item.bg, borderRadius: 12, flexShrink: 0, border: `1.5px solid ${item.color}30`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                      <div style={{ width: 16, height: 16, background: item.color, borderRadius: 4, opacity: 0.7 }} />
+                    <div style={{ width: 42, height: 42, background: item.grad, borderRadius: 12, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 12px rgba(124,58,237,0.2)" }}>
+                      <div style={{ width: 16, height: 16, background: "rgba(255,255,255,0.7)", borderRadius: 4 }} />
                     </div>
                     <div>
                       <div style={{ fontSize: 14, fontWeight: 900, color: "#1F2937", marginBottom: 2 }}>{item.title}</div>
@@ -488,7 +468,7 @@ export default function Home({ openLogin }: HomeProps) {
               <div className="float-anim" style={{ borderRadius: 28, overflow: "hidden", border: "1.5px solid #EDE9FE", boxShadow: "0 32px 80px rgba(124,58,237,0.2)" }}>
                 <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&h=700&fit=crop" style={{ width: "100%", height: 460, objectFit: "cover", display: "block" }} alt="concert" />
               </div>
-              <div className="float-anim2 why-float-card" style={{ position: "absolute", bottom: -20, left: -32, borderRadius: 18, padding: "16px 20px", background: "white", boxShadow: "0 16px 48px rgba(124,58,237,0.15)", border: "1.5px solid #EDE9FE" }}>
+              <div className="float-anim2" style={{ position: "absolute", bottom: -20, left: -32, borderRadius: 18, padding: "16px 20px", background: "white", boxShadow: "0 16px 48px rgba(124,58,237,0.15)", border: "1.5px solid #EDE9FE" }}>
                 <div style={{ fontSize: 11, color: "#7C3AED", fontWeight: 800, marginBottom: 4 }}>Tiket Terverifikasi</div>
                 <div style={{ fontSize: 15, fontWeight: 900, color: "#1F2937" }}>Coldplay Jakarta</div>
                 <div style={{ fontSize: 12, color: "#7C3AED", fontWeight: 700 }}>14 Juni 2026 · GBK Stadium</div>
@@ -502,7 +482,7 @@ export default function Home({ openLogin }: HomeProps) {
         </div>
       </section>
 
-      {/* CTA — tanpa emoji */}
+      {/* ── CTA ── */}
       <section className="cta-section" style={{ padding: "0 80px 72px", background: "#FAFAFF" }}>
         <div className="cta-box" style={{ background: "linear-gradient(135deg,#7C3AED,#EC4899,#F59E0B)", borderRadius: 36, padding: "56px 72px", textAlign: "center", position: "relative", overflow: "hidden", boxShadow: "0 32px 80px rgba(124,58,237,0.3)" }}>
           <div style={{ position: "absolute", top: -60, left: -60, width: 220, height: 220, background: "rgba(255,255,255,0.07)", borderRadius: "50%" }} />
@@ -510,34 +490,52 @@ export default function Home({ openLogin }: HomeProps) {
           <div style={{ position: "relative", zIndex: 1 }}>
             <h2 className="display-font cta-title" style={{ fontSize: 44, fontWeight: 900, color: "white", marginBottom: 14, letterSpacing: "-0.5px" }}>Jangan Sampai<br />Kehabisan Tiket!</h2>
             <p className="cta-desc" style={{ fontSize: 16, color: "rgba(255,255,255,0.9)", marginBottom: 30, fontWeight: 600 }}>Daftar sekarang dan langsung dapat kode promo <strong>TIKETBARU</strong> diskon 50%</p>
-            <button className="cta-btn" onClick={openLogin} style={{ background: "white", color: "#7C3AED", border: "none", padding: "16px 48px", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: "pointer", boxShadow: "0 12px 36px rgba(0,0,0,0.2)", transition: "transform 0.2s", fontFamily: "'Nunito',sans-serif" }}
+            <button onClick={openLogin} style={{ background: "white", color: "#7C3AED", border: "none", padding: "16px 48px", borderRadius: 50, fontWeight: 900, fontSize: 16, cursor: "pointer", boxShadow: "0 12px 36px rgba(0,0,0,0.2)", transition: "transform 0.2s", fontFamily: "'Nunito',sans-serif" }}
               onMouseOver={e => (e.currentTarget.style.transform = "scale(1.05)")}
               onMouseOut={e => (e.currentTarget.style.transform = "scale(1)")}>
               Daftar & Klaim Promo Sekarang
             </button>
-            <div style={{ marginTop: 14, fontSize: 12, color: "rgba(255,255,255,0.75)", fontWeight: 700 }}>Gratis · Aman · Tiket Resmi · Tanpa Calo</div>
+            <div style={{ marginTop: 14, fontSize: 12, color: "rgba(255,255,255,0.75)", fontWeight: 700 }}>Gratis · Aman · Tiket Resmi · Tanpa Calo · *S&K Berlaku</div>
           </div>
         </div>
       </section>
 
-      {/* FOOTER — icon 🎫 dipertahankan */}
-      <footer className="footer-container" style={{ background: "#1F2937", padding: "40px 80px" }}>
-        <div className="footer-inner" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <div style={{ width: 36, height: 36, background: "linear-gradient(135deg,#7C3AED,#EC4899)", borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18 }}>🎫</div>
-            <div>
-              <div style={{ fontSize: 17, fontWeight: 900, fontFamily: "'Plus Jakarta Sans',sans-serif", color: "white" }}>TiketIn</div>
-              <div style={{ fontSize: 10, color: "#6B7280", fontWeight: 700, letterSpacing: "1px" }}>© 2026 — Platform Tiket #1 Indonesia</div>
+      {/* ── FOOTER — tiket.com style ── */}
+      <footer style={{ background: "#111827" }}>
+        <div style={{ padding: "56px 80px 32px", maxWidth: 1280, margin: "0 auto" }}>
+          <div className="footer-grid" style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr 1fr", gap: 40, marginBottom: 40 }}>
+            <div className="footer-brand">
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
+                <div style={{ width: 34, height: 34, background: "linear-gradient(135deg,#7C3AED,#EC4899)", borderRadius: 9, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 17 }}>🎫</div>
+                <div style={{ fontSize: 17, fontWeight: 900, fontFamily: "'Plus Jakarta Sans',sans-serif", color: "white" }}>TiketIn</div>
+              </div>
+              <p style={{ fontSize: 13, color: "#6B7280", fontWeight: 600, lineHeight: 1.8, maxWidth: 260, marginBottom: 16 }}>Platform booking tiket event dan konser terpercaya di Indonesia. Tiket resmi, harga transparan, tanpa calo.</p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                <div style={{ fontSize: 12, color: "#4B5563", fontWeight: 600 }}>WhatsApp: +62 858 1150 0888</div>
+                <div style={{ fontSize: 12, color: "#4B5563", fontWeight: 600 }}>Email: cs@tiketin.com</div>
+                <div style={{ fontSize: 12, color: "#4B5563", fontWeight: 600 }}>Call Center: +62 21 3973 0888</div>
+              </div>
             </div>
-          </div>
-          <div className="footer-links" style={{ display: "flex", gap: 28 }}>
-            {[["Beranda", "/"], ["Event", "/events"], ["Tentang", "/about"], ["Bantuan", "#"]].map(([label, path]) => (
-              <a key={label} href={path} style={{ color: "#9CA3AF", textDecoration: "none", fontSize: 13, fontWeight: 600 }}>{label}</a>
+            {[
+              { title: "Perusahaan", links: ["Tentang Kami", "Karir", "Blog", "Berita", "Kemitraan", "Affiliate"] },
+              { title: "Produk", links: ["Konser", "Festival", "Olahraga", "Pameran", "Gathering", "Paket Bundle"] },
+              { title: "Dukungan", links: ["Pusat Bantuan", "FAQ", "Kebijakan Privasi", "Syarat & Ketentuan", "Refund & Pembatalan", "Laporkan Masalah"] },
+              { title: "Lainnya", links: ["Daftarkan Event", "Event Organizer", "Tiket Group", "Proteksi Tiket", "Cek Keaslian Tiket", "Blibli Rewards"] },
+            ].map((col, i) => (
+              <div key={i}>
+                <div style={{ fontSize: 12, fontWeight: 800, color: "white", letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: 14 }}>{col.title}</div>
+                {col.links.map(l => <a key={l} href="#" className="footer-link">{l}</a>)}
+              </div>
             ))}
           </div>
-        </div>
-        <div style={{ paddingTop: 16, borderTop: "1px solid rgba(255,255,255,0.06)", textAlign: "center", color: "#6B7280", fontSize: 12 }}>
-          Dibuat untuk para pencinta musik & event Indonesia
+          <div className="footer-bottom" style={{ borderTop: "1px solid #1F2937", paddingTop: 20, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
+            <div style={{ fontSize: 12, color: "#4B5563", fontWeight: 600 }}>© 2026 TiketIn. All rights reserved. Platform Tiket #1 Indonesia.</div>
+            <div style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
+              {["Syarat & Ketentuan", "Kebijakan Privasi", "Cookie Policy"].map(l => (
+                <a key={l} href="#" style={{ fontSize: 12, color: "#4B5563", fontWeight: 600, textDecoration: "none", transition: "color 0.2s" }} onMouseOver={e => (e.currentTarget.style.color = "#A78BFA")} onMouseOut={e => (e.currentTarget.style.color = "#4B5563")}>{l}</a>
+              ))}
+            </div>
+          </div>
         </div>
       </footer>
 
